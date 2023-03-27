@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\SortieRepository;
 use Doctrine\DBAL\Types\Types;
@@ -42,6 +44,19 @@ class Sortie
     #[Assert\NotBlank]
     #[Assert\NotNull]
     private ?string $descriptioninfos = null;
+
+    #[ORM\ManyToOne(inversedBy: 'sorties')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $organisateur = null;
+
+    #[ORM\OneToMany(mappedBy: 'sortie_id', targetEntity: Inscription::class)]
+    private Collection $inscriptions;
+
+
+    public function __construct()
+    {
+        $this->inscriptions = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -120,4 +135,47 @@ class Sortie
 
         return $this;
     }
+
+    public function getOrganisateur(): ?User
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?User $organisateur): self
+    {
+        $this->organisateur = $organisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inscription>
+     */
+    public function getInscriptions(): Collection
+    {
+        return $this->inscriptions;
+    }
+
+    public function addInscription(Inscription $inscription): self
+    {
+        if (!$this->inscriptions->contains($inscription)) {
+            $this->inscriptions->add($inscription);
+            $inscription->setSortieId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInscription(Inscription $inscription): self
+    {
+        if ($this->inscriptions->removeElement($inscription)) {
+            // set the owning side to null (unless already changed)
+            if ($inscription->getSortieId() === $this) {
+                $inscription->setSortieId(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
