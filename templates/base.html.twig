@@ -5,15 +5,36 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        <link rel="stylesheet" href="{{ 'css/style.css' }}">
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+{#            {{ encore_entry_link_tags('app') }}#}
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+{#            {{ encore_entry_script_tags('app') }}#}
         {% endblock %}
     </head>
     <body>
+    <header>
+        <div id="logo">
+        <img class="logo" src="" alt="logo sortir.com">
+        <h1 class="logo">Sortir.com</h1>
+        </div>
+        <nav>
+            <ul>
+                <li>Villes</li>
+                <li>Campus</li>
+                <li>Accueil</li>
+                <li>Mon profil</li>
+                <li>Se déconnecter</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
         {% block body %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; Sortir.com {{ 'now' | date('Y') }}</p>
+    </footer>
     </body>
 </html>
