@@ -34,11 +34,4 @@ class MainController extends AbstractController
     }
 
 
-/*    #[Route('/compte/modifier', name: '_modifier')]
-    public function modifier(): Response
-    {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
-    }*/
 }
