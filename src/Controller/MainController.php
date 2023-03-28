@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/home', name: 'main')]
+#[Route('/', name: 'main')]
 class MainController extends AbstractController
 {
     #[Route('/', name: '_index')]
@@ -17,13 +19,17 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/compte', name: '_afficher')]
-    public function afficher(): Response
+    #[Route('/compte/{id}', name: '_afficher')]
+    public function afficher(User $id): Response
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+
+
+
+        return $this->render('main/compte.html.twig',
+            compact('id')
+        );
     }
+
 
     #[Route('/compte/modifier', name: '_modifier')]
     public function modifier(): Response
