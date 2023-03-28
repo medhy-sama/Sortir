@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -29,8 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 30)]
-    private ?string $pseudo = null;
+
 
     #[ORM\Column(length: 30)]
     private ?string $nom = null;
@@ -44,8 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20)]
     private ?string $mail = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $mot_de_passe = null;
+
 
     #[ORM\Column]
     private ?bool $administrateur = null;
@@ -75,17 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
 
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
 
     public function getNom(): ?string
     {
@@ -135,17 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMotDePasse(): ?string
-    {
-        return $this->mot_de_passe;
-    }
 
-    public function setMotDePasse(string $mot_de_passe): self
-    {
-        $this->mot_de_passe = $mot_de_passe;
-
-        return $this;
-    }
 
     public function isAdministrateur(): ?bool
     {
