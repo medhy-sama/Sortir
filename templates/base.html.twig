@@ -25,7 +25,7 @@
                 <li><a href="">Villes</a></li>
                 <li><a href="">Campus</a></li>
                 <li><a href="">Accueil</a></li>
-                <li><a href="">Mon profi</a>l</li>
+                {% if app.user %}<li><a href="{{ path('main_afficher',{'id':app.user.id}) }}">Mon profil</a></li>{% endif %}
                 <li><a href="{{ app.user ? path('logout_logout') : path('login_login') }}">{{ app.user ? 'Déconnexion' : 'Connexion' }}</a></li>
             </ul>
         </nav>
