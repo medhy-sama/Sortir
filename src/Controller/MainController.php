@@ -19,17 +19,13 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/compte/{id}', name: '_afficher')]
-    public function afficher(User $id): Response
+    #[Route('/compte', name: '_afficher')]
+    public function afficher(): Response
     {
-
-
-
-        return $this->render('main/compte.html.twig',
-            compact('id')
-        );
+        return $this->render('main/index.html.twig', [
+            'controller_name' => 'MainController',
+        ]);
     }
-
 
     #[Route('/compte/modifier', name: '_modifier')]
     public function modifier(): Response
