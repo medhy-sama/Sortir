@@ -22,7 +22,7 @@ security:
                 # checkbox in the login form (see below), uncomment the
                 # following line to always enable it.
                 #always_remember_me: true
-                always_remember_me: true
+                remember_me_parameter: _remember_me
                 signature_properties: ['password', 'username']
 #                token_provider:
 #                    service: App\Security\RememberMe\CustomTokenProvider
