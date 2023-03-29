@@ -51,6 +51,11 @@ class Campus
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->nom;
+    }
+
     /**
      * @return Collection<int, Sortie>
      */
@@ -109,5 +114,10 @@ class Campus
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom;
     }
 }

@@ -46,3 +46,22 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+ul{
+    display: flex;
+    justify-content: center;
+}
+li{
+    padding: 0 2em;
+    list-style-type: none;
+    font-family: "MS UI Gothic", sans-serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: whitesmoke;
+}
+a{
+    text-decoration: none;
+    text-decoration-color: black;
+    font-size: 18px;
+    font-family: "JetBrains Mono Light", sans-serif;
+}

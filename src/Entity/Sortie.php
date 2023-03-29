@@ -64,6 +64,8 @@ class Sortie
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 
+    private ?Ville $ville =null;
+
 
     public function __construct()
     {
@@ -224,6 +226,27 @@ class Sortie
         $this->etat = $etat;
 
         return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville= $ville;
+
+        return $this;
+    }
+
+    public function estInscrit(User $user)
+    {
+        return $this->inscriptions->filter(function (Inscription $inscription) use ($user) {
+
+            return $inscription->getUserId() === $user;
+
+        })->count();
     }
 
 }
