@@ -3,21 +3,66 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block body %}
-    <h1>Liste des sorties</h1>
 
-    <ul>
-        {% for chaqueSortie in sorties %}
-            <li id="sorties">
-                <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}
-                    <span id="infoSortie">
-                      {{ chaqueSortie.lieu.nomLieu }}
-                        {{ chaqueSortie.datedebut | date('d/m/y H:i')}}
-                        {{ chaqueSortie.lieu.ville.nomVille}}
-                    </span>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="p-5">
+        <h1> Filtrer les sorties </h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button>Filtrer</button>
+        {{ form_end(form) }}
+
+
+
+    <h2>Liste des sorties</h2>
+
+    <table class="table table-responsive">
+    <tr>
+        <th>Sortie</th>
+        <th>Date</th>
+        <th>Clôture</th>
+        <th>Inscrits/places</th>
+        <th>Statut</th>
+        <th>Inscrit</th>
+        <th>Organisateur</th>
+        <th>Actions</th>
+    </tr>
+    {% for chaqueSortie in sorties %}
+        <tr>
+        <td> <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}</td>
+        <td>{{ chaqueSortie.datedebut | date('d/m/y H:i')}}</td>
+        <td>{{ chaqueSortie.dateCloture | date('d/m/y H:i')}}</td>
+        <td>{{ chaqueSortie.inscriptions | length}}/{{ chaqueSortie.nbinscriptionsmax }}</td>
+        <td>{{ chaqueSortie.etat.libelle }}</td>
+        <td>    {% if chaqueSortie.estInscrit(app.user) == 1  %}
+                    Inscrit
+                {% else %}
+                    Non Inscrit
+                 {% endif%}
+        </td>
+        <td>{{ chaqueSortie.organisateur.username}}</td>
+        <td></td>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+
+
+
+{#    <h1>Liste des sorties</h1>#}
+
+{#    <ul>#}
+{#        {% for chaqueSortie in sorties %}#}
+{#            <li id="sorties">#}
+{#                <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}#}
+{#                    <span id="infoSortie">#}
+{#                      {{ chaqueSortie.lieu.nomLieu }}#}
+{#                        {{ chaqueSortie.datedebut | date('d/m/y H:i')}}#}
+{#                        {{ chaqueSortie.lieu.ville.nomVille}}#}
+{#                    </span>#}
+{#                </a>#}
+{#            </li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
 
     <a href="{{ path('_creer') }}">Organiser une nouvelle sortie</a>
 {% endblock %}
