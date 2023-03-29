@@ -3,9 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -22,18 +27,42 @@ class MainController extends AbstractController
     #[Route('/compte', name: '_afficher')]
     public function afficher(): Response
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        return $this->render('main/compte.html.twig'
+        );
     }
 
-    #[Route('/compte/modifier', name: '_modifier')]
-    public function modifier(): Response
+
+    #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
+    public function modifier(User $user, EntityManagerInterface $entityManager,Request $request, User $id, UserRepository $userRepository): Response
     {
-        return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
-        ]);
+        $userForm =$this->createForm(UserType::class, $user);
+        $userForm->handleRequest($request);
+
+        $val1 = $userRepository->find($id);
+        if ($userForm->isSubmitted() and $userForm->isValid()){
+            if ($val1->getPassword() != $userForm->get('password')){
+dd($userForm->get('password'));
+                $entityManager->persist($id);
+                $entityManager->flush();
+                return $this->render('main/compte.html.twig');
+            }
+            }
+
+        return $this->render('main/modifier.html.twig',compact('userForm'));
     }
 
+
+//Wish $wish,
+//EntityManagerInterface $entityManager,
+//Request $request
+//): Response {
+//$wishForm = $this->createForm(ListeSouhaitsType::class, $wish);
+//$wishForm->handleRequest($request);
+//if ($wishForm->isSubmitted() && $wishForm->isValid()) {
+//$entityManager->persist($wish);
+//$entityManager->flush();
+//
+//return $this->redirectToRoute('wish_affiche_list');
+//}
 
 }
