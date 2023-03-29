@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if app.user %}
+        <div id="conteneur">
+
+            <article>
+                <p>Votre pseudo : </p><p><strong>{{ app.user.username }}</strong></p>
+                <p>Votre nom : </p><p><strong>{{ app.user.nom }}</strong></p>
+                <p>Votre prenom : </p><p><strong>{{ app.user.prenom }}</strong></p>
+                <p>Votre numéro de téléphone : </p><p><strong>{{ app.user.telephone }}</strong></p>
+                <p>Votre email : </p><p><strong>{{ app.user.mail }}</strong></p>
+            </article>
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
