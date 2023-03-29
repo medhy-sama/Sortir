@@ -20,13 +20,14 @@ class SortieController extends AbstractController
     public function listeSortie(SortieRepository $sortieRepository,
                                 Request $request): Response
     {
+
+        $sorties =  $sortieRepository->findAll();
         $rechercheSortie = new rechercheSortie();
 
-        //$rechercheSortie -> setCampus = $request->get('campus');
         $form = $this->createForm(RechercheSortieType::class, $rechercheSortie);
-       // $form->handleRequest($request);
+        $form->handleRequest($request);
 
-       $sorties =  $sortieRepository->findAll();
+
         return $this->render('sortie/liste.html.twig',
                 compact('sorties','form')
         );
