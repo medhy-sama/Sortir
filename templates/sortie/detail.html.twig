@@ -1,6 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
+{% block title %}Sortie{% endblock %}
 
+{% block body %}
+    <h1>{{ sortie.nom }}</h1>
+
+    <section id="details">
+        <div id="titre">
+            {{ sortie.descriptioninfos }}
+            {{ sortie.lieu.nomLieu}}
+            {{ sortie.lieu.rue ~ ' '~ sortie.lieu.ville.codePostal ~' '~ sortie.lieu.ville.nomVille}}
+            {{ sortie.campus.nom}}
+        </div>
+        <div id="dateHoraire">
+            {{ sortie.datedebut ? sortie.datedebut|date('d/m/y H:i') : '' }}
+            {{ sortie.duree }}
+            {{ sortie.datecloture ? sortie.datecloture|date('d/m/y H:i') : '' }}
+        </div>
+        <div id="infoAdmin">
+            {{ sortie.nbinscriptionsmax }}
+            {{ sortie.etat.libelle }}
+            {{ sortie.organisateur.username}}
+        </div>
+
+
+
+
+
+
+
+
+    </section>
+
+
+    <a href="{{ path('_list') }}">Retourner à liste des sorties</a>
 {% endblock %}
-

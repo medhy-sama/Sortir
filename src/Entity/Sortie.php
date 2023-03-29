@@ -32,7 +32,7 @@ class Sortie
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThan('datedebut')]
+    #[Assert\GreaterThanOrEqual('today')]
     private ?\DateTimeInterface $datecloture = null;
 
     #[ORM\Column]
