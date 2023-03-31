@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,48 +41,72 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
-    public function search(rechercheSortie $recherche) :array
+    public function search(rechercheSortie $recherche, User $user) :array
     {
             $sorties= $this->createQueryBuilder('s');
 
             if(!empty($recherche->getQ())){
                 $sorties = $sorties
+                    ->andWhere('s.nom LIKE :searchTerm')
                     ->setParameter('searchTerm', '%'.($recherche->getQ()).'%')
-                    ->Where('s.nom LIKE :searchTerm')
                     ->orderBy('s.datedebut','DESC');
+
+
             }
 
             if(!empty ($recherche->getCampus())){
                 $sorties = $sorties
-                    ->andWhere('s.campus = :campus');
+                    ->andWhere('s.campus = :campus')
+                    ->setParameter('campus', $recherche->getCampus())
+                    ->orderBy('s.datedebut','ASC');
+
             }
 
-            $sorties->getQuery()
-                    ->getResult();
-        return $sorties;
+            if(!empty($recherche->getDatemin())){
+                $sorties = $sorties
+                    ->andWhere('s.datedebut >= :datemin')
+                    ->setParameter('datemin',$recherche->getDatemin())
+                    ->orderBy('s.datedebut','ASC');
+
+            }
+
+            if(!empty($recherche->getDatemax())){
+                $sorties = $sorties
+                    ->andWhere('s.datedebut <= :datemax')
+                    ->setParameter('datemax',$recherche->getDatemax())
+                    ->orderBy('s.datedebut','ASC');
+
+            }
+
+            if(!empty ($recherche->getOrganisateur())){
+                $sorties = $sorties
+                    ->andWhere('s.organisateur = :organisateur')
+                    ->setParameter('organisateur',$user)
+                    ->orderBy('s.datedebut','ASC');
+            }
+
+            if(!empty ($recherche->getInscrit())){
+                $sorties = $sorties
+                    ->andWhere(':user MEMBER OF s.inscriptions')
+                    ->setParameter('user',$user)
+                    ->orderBy('s.datedebut','ASC');
+            }
+
+            if(!empty ($recherche->getNoninscrit())){
+                $sorties = $sorties
+                    ->andWhere(':user NOT MEMBER OF s.inscriptions')
+                    ->setParameter('user',$user)
+                    ->orderBy('s.datedebut','ASC');
+            }
+
+          //TODO:  if(!empty ($recherche->getSortiepassee())){
+//                $sorties = $sorties
+//                    ->andWhere('s.organisateur = :organisateur')
+//                    ->setParameter('organisateur',$user)
+//                    ->orderBy('s.datedebut','ASC');
+//            }
+
+
+        return $sorties ->getQuery()->getResult();
     }
 }

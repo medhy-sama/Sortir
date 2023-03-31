@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
@@ -32,23 +33,14 @@ class SortieController extends AbstractController
         $sorties = $sortieRepository->findAll();
 
         $rechercheSortie = new rechercheSortie();
+        $user = $this->getUser();
         $form = $this->createForm(SearchType::class,$rechercheSortie);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-            $sorties = $sortieRepository->search($rechercheSortie);
-            //return $this->redirectToRoute('_list', compact('sorties','form'));
-
-
-
-            } catch (\Exception $exception) {
-                return $this->redirectToRoute('_list');
-            }
-        }
-            return $this->render('sortie/liste.html.twig',
-               compact('sorties','form')
-            );
+            return $this->render('sortie/liste.html.twig', [
+                'sorties' => $sortieRepository->search($rechercheSortie, $user),
+                'form' => $form
+            ]);
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
