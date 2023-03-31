@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Repository\CampusRepository;
 use App\Repository\LieuRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -52,15 +54,19 @@ class SortieType extends AbstractType
                 ['class'=> Campus::class,
                     'label'=> 'Campus',
                     'choice_label' => 'nom',
-                    'placeholder' => '',
+                    'disabled' => true,
+
                    ])
             ->add('ville' , EntityType::class,
                 [
                     'label'=>'Ville',
                     'class'=> Ville::class,
                     'choice_label'=> 'nomVille',
-                    'placeholder' => '',
+                    'placeholder' => 'Choisir une ville',
                 ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+
+            })
 
             ->add('lieu', EntityType::class,[
 
@@ -71,7 +77,16 @@ class SortieType extends AbstractType
 
                 },
                 'choice_label'=>'nomLieu',
+                'placeholder' => '',
             ])
+
+//            ->add('etat', EntityType::class,
+//            [
+//                'class' => Etat::class,
+//                'data' => 'etat' ,
+//                'disabled' => false,
+//
+//            ])
 
 
 //        $formModifier = function (FormInterface $form, Ville $ville = null) {

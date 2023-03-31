@@ -2,8 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Campus;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Ville;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -45,9 +48,12 @@ class adminController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fas fa-landmark');
         yield MenuItem::linkToCrud('Stagiaires', 'fas fa-users', User::class);
-        yield MenuItem::linkToCrud('Sorties', 'fas fa-list', Sortie::class);
-        yield MenuItem::linkToRoute('Logout', 'fas fa-home', 'main_index');
+        yield MenuItem::linkToCrud('Sorties', 'fas fa-glass-martini-alt', Sortie::class);
+        yield MenuItem::linkToCrud('Campus', 'fas fa-building', Campus::class);
+        yield MenuItem::linkToCrud('Villes', 'fas fa-globe-europe', Ville::class);
+        yield MenuItem::linkToCrud('Lieu', 'fas fa-map-marked-alt', Lieu::class);
+        yield MenuItem::linkToRoute('Home', 'fas fa-home', '_index');
     }
 }
