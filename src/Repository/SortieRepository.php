@@ -64,7 +64,7 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function search(rechercheSortie $recherche)
+    public function search(rechercheSortie $recherche) :array
     {
             $sorties= $this->createQueryBuilder('s');
 
@@ -72,17 +72,13 @@ class SortieRepository extends ServiceEntityRepository
                 $sorties = $sorties
                     ->setParameter('searchTerm', '%'.($recherche->getQ()).'%')
                     ->Where('s.nom LIKE :searchTerm')
-                    ->orderBy('s.datedebut','DESC')
-
-
+                    ->orderBy('s.datedebut','DESC');
             }
 
-//            if(!empty ($recherche->getCampus())){
-//                $sorties = $sorties
-//                    ->andWhere('s.campus LIKE :campusSearch')
-//                    ->setParameter('campusSearch','%'.($recherche->getCampus()).'%');
-//
-//            }
+            if(!empty ($recherche->getCampus())){
+                $sorties = $sorties
+                    ->andWhere('s.campus = :campus');
+            }
 
             $sorties->getQuery()
                     ->getResult();

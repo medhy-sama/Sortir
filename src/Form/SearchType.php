@@ -24,6 +24,9 @@ class SearchType extends AbstractType
                 'empty_data'=>null,
                 'choice_label'=>'nom',
                 'mapped' => true,
+                'attr'=>[
+                    'placeholder' => '',
+                ]
 
             ])
             ->add('q', TextType::class,[
