@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\InscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -248,5 +249,6 @@ class Sortie
 
         })->count();
     }
+
 
 }

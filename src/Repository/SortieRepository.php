@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,4 +64,24 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function search(rechercheSortie $recherche) :array
+    {
+            $sorties= $this->createQueryBuilder('s');
+
+            if(!empty($recherche->getQ())){
+                $sorties = $sorties
+                    ->setParameter('searchTerm', '%'.($recherche->getQ()).'%')
+                    ->Where('s.nom LIKE :searchTerm')
+                    ->orderBy('s.datedebut','DESC');
+            }
+
+            if(!empty ($recherche->getCampus())){
+                $sorties = $sorties
+                    ->andWhere('s.campus = :campus');
+            }
+
+            $sorties->getQuery()
+                    ->getResult();
+        return $sorties;
+    }
 }

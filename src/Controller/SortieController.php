@@ -1,16 +1,18 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Campus;
 use App\Entity\Etat;
+use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Form\SearchType;
 use App\Form\RechercheSortieType;
 use App\Form\SortieType;
-use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
+use App\Repository\InscriptionRepository;
+use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,24 +24,37 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
+
+
+#[IsGranted("ROLE_USER")]
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[IsGranted('ROLE_USER')]
-    #[Route('/', name: '_list', methods: ['GET'])]
+    #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
-                                Request $request): Response
+                                Request $request,
+                                EntityManagerInterface $em): Response
     {
+        $sorties = $sortieRepository->findAll();
+
         $rechercheSortie = new rechercheSortie();
+        $form = $this->createForm(SearchType::class,$rechercheSortie);
+        $form->handleRequest($request);
 
-        //$rechercheSortie -> setCampus = $request->get('campus');
-        $form = $this->createForm(RechercheSortieType::class, $rechercheSortie);
-       // $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+            $sorties = $sortieRepository->search($rechercheSortie);
+            //return $this->redirectToRoute('_list', compact('sorties','form'));
 
-       $sorties =  $sortieRepository->findAll();
-        return $this->render('sortie/liste.html.twig',
-                compact('sorties','form')
-        );
+
+
+            } catch (\Exception $exception) {
+                return $this->redirectToRoute('_list');
+            }
+        }
+            return $this->render('sortie/liste.html.twig',
+               compact('sorties','form')
+            );
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
@@ -80,10 +95,10 @@ class SortieController extends AbstractController
 
 
         return $this->render('sortie/detail.html.twig',
-                            compact('sortie'));
+            compact('sortie'));
     }
 
-    #[Route('/{id}/edit', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
+    #[Route('/edit/{id}', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
         $form = $this->createForm(SortieType::class, $sortie);
@@ -92,7 +107,7 @@ class SortieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $sortieRepository->save($sortie, true);
 
-            return $this->redirectToRoute('app_sortie_edit', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('sortie/edit.html.twig', [
@@ -104,12 +119,50 @@ class SortieController extends AbstractController
     #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
     public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sortie->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
 
-        return $this->redirectToRoute('app_sortie_delete', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
+    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $inscription = new inscription();
+        $inscription->setSortieId($sortieRepository->find($sortie->getId()));
+        $inscription->setUserId($userRepository->find($user->getId()));
+        $inscription->setDateInscription(new \DateTime());
+        $entityManager->persist($inscription);
+        $entityManager->flush();
 
+        return $this->redirectToRoute('_list');
+    }
+
+    #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
+    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    {
+
+        $sortie->setEtat($etatRepository->find(2));
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('_list');
+    }
+
+    #[Route('/desiter/{sortie}', name: '_desister', methods: ['GET'])]
+    public function deinscription( InscriptionRepository $inscriptionRepository, EntityManagerInterface $entityManager): Response
+    {
+            $inscription = $inscriptionRepository->findOneBy(['user_id' => $this->getUser()->getId()]);
+        $user= $this->getUser();
+        $user->removeInscription($inscription);
+        $entityManager->remove($inscription);
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+
+        return $this->redirectToRoute('_list');
+    }
 }
