@@ -11,8 +11,11 @@
                 <p>Votre prenom : </p><p><strong>{{ app.user.prenom }}</strong></p>
                 <p>Votre numéro de téléphone : </p><p><strong>{{ app.user.telephone }}</strong></p>
                 <p>Votre email : </p><p><strong>{{ app.user.mail }}</strong></p>
+                <a href="{{ path('_modifier', {'id': app.user.id}) }}"><button >Modifier</button></a>
             </article>
-            <a href="{{ path('_modifier', {'id': app.user.id}) }}"><button >Modifier</button></a>
+
+
+
         </div>
     {% endif %}
 {% endblock %}
