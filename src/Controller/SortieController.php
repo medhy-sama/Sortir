@@ -7,12 +7,14 @@ use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\User;
+use App\Entity\Ville;
 use App\Form\SearchType;
 use App\Form\RechercheSortieType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\InscriptionRepository;
 use App\Repository\CampusRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -33,7 +36,7 @@ class SortieController extends AbstractController
     #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
                                 Request $request,
-                                EntityManagerInterface $em): Response
+                                ): Response
     {
         $sorties = $sortieRepository->findAll();
 
@@ -123,7 +126,7 @@ class SortieController extends AbstractController
             $sortieRepository->remove($sortie, true);
         }
 
-        return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
@@ -164,5 +167,32 @@ class SortieController extends AbstractController
 
 
         return $this->redirectToRoute('_list');
+    }
+
+    #[Route('/lieu-city/{ville}', name: '_lieu', methods: ['GET'])]
+    public function listLieuDeVille(
+        Ville $ville,
+        Request $request,
+        EntityManagerInterface $em,
+        LieuRepository $lieuRepository
+    ): JsonResponse
+    {
+
+        $em = $this->getUser();
+
+        $lieux = $lieuRepository->createQueryBuilder("q")
+            ->where("q.ville = :villeId")
+            ->setParameter("villeId", $ville->getId())
+            ->getQuery()
+            ->getResult();
+
+        $responseArray = array();
+        foreach ($lieux as $lieu){
+            $responseArray[] = array(
+                "id" => $lieu->getId(),
+                "nom_lieu" => $lieu->getNomLieu()
+            );
+        }
+        return new JsonResponse($responseArray);
     }
 }
