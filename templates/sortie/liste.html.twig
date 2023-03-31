@@ -4,16 +4,23 @@
 
 {% block body %}
 
-    <div class="p-5">
+    <div class="">
         <h1> Filtrer les sorties </h1>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button>Filtrer</button>
-        {{ form_end(form) }}
+            <div class="form_search" {{ stimulus_controller('serch-preview', { url: path('_list')}) }}>
+                {{ form_start(form) }}
+                {{ form_row(form.campus)}}
+                <div class="form-control" data-action="search-preview#onSearchInput">{{ form_row(form.q)}} </div>
+                {{ form_row(form.datemin)}}
+                {{ form_row(form.datemax)}}
+                {{ form_row(form.organisateur)}}
+                {{ form_row(form.inscrit)}}
+                {{ form_row(form.nonInscrit)}}
+                {{ form_row(form.sortiePassee)}}
+                <button>Filtrer</button>
+                {{ form_end(form) }}
+            </div>
 
-
-
-    <h2>Liste des sorties</h2>
+        <h2>Liste des sorties</h2>
 
     <table class="table table-responsive">
     <tr>
@@ -26,6 +33,7 @@
         <th>Organisateur</th>
         <th>Actions</th>
     </tr>
+        <div class="list-group-item" data-search-preview-target="result">
     {% for chaqueSortie in sorties %}
         <tr>
         <td> <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}</td>
@@ -59,6 +67,7 @@
         </td>
     </tr>
     {% endfor %}
+        </div>
     </table>
     </div>
 

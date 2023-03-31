@@ -5,17 +5,14 @@ namespace App\Controller;
 use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
-
-use App\Form\RechercheSortieType;
+use App\Entity\User;
+use App\Form\SearchType;
 use App\Form\SortieType;
-
 use App\Repository\EtatRepository;
 use App\Repository\InscriptionRepository;
 use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
-
 use Doctrine\ORM\EntityManagerInterface;
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,26 +24,37 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/', name: '_list', methods: ['GET'])]
+    #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
-                                Request          $request): Response
+                                Request $request,
+                                EntityManagerInterface $em): Response
     {
-        $rechercheSortie = new rechercheSortie();
-
-        //$rechercheSortie -> setCampus = $request->get('campus');
-        $form = $this->createForm(RechercheSortieType::class, $rechercheSortie);
-        // $form->handleRequest($request);
-
         $sorties = $sortieRepository->findAll();
-        return $this->render('sortie/liste.html.twig',
-            compact('sorties', 'form')
-        );
+
+        $rechercheSortie = new rechercheSortie();
+        $form = $this->createForm(SearchType::class,$rechercheSortie);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+            $sorties = $sortieRepository->search($rechercheSortie);
+            //return $this->redirectToRoute('_list', compact('sorties','form'));
+
+
+
+            } catch (\Exception $exception) {
+                return $this->redirectToRoute('_list');
+            }
+        }
+            return $this->render('sortie/liste.html.twig',
+               compact('sorties','form')
+            );
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
-    public function creerSortie(Request                $request,
+    public function creerSortie(Request $request,
                                 EntityManagerInterface $em,
-    ): Response
+                                ): Response
 
     {
         $sortie = new Sortie();
