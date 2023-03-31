@@ -3,6 +3,8 @@
    License: none (public domain)
 */
 
+/*-----------------resset-----------------------------*/
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -23,35 +25,81 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
+
 body {
     line-height: 1;
 }
+
 ol, ul {
     list-style: none;
 }
+
 blockquote, q {
     quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
     content: '';
     content: none;
 }
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-ul{
-    display: flex;
-    justify-content: center;
+
+/*----------------------------defaut---------------------------------*/
+main{
+    margin: 0 auto;
 }
-li{
+html{
+    font-family: "Dubai", "Tempus Sans ITC", "Times New Roman", sans-serif ;
+}
+/*----------------------------css stephane---------------------------------*/
+/*ul {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*li {*/
+/*    padding: 0 2em;*/
+/*    list-style-type: none;*/
+/*    font-family: "MS UI Gothic", sans-serif;*/
+/*    font-size: 1.2em;*/
+/*    font-weight: bold;*/
+/*    color: whitesmoke;*/
+/*}*/
+
+/*a {*/
+/*    text-decoration: none;*/
+/*    text-decoration-color: black;*/
+/*    font-size: 18px;*/
+/*    font-family: "JetBrains Mono Light", sans-serif;*/
+/*}*/
+
+/*----------------------------header---------------------------------*/
+
+header{
+    display: flex;
+
+    padding: 7em;
+}
+#logo{
+    width: 30%;
+}
+nav ul{
+        display: flex;
+        justify-content: center;
+}
+nav li {
     padding: 0 2em;
     list-style-type: none;
     font-family: "MS UI Gothic", sans-serif;
@@ -59,9 +107,33 @@ li{
     font-weight: bold;
     color: whitesmoke;
 }
-a{
+
+nav a {
     text-decoration: none;
     text-decoration-color: black;
     font-size: 18px;
     font-family: "JetBrains Mono Light", sans-serif;
 }
+
+/*----------------------------main---------------------------------*/
+main{
+    width: 1000px;
+    padding: 7em 0;
+}
+h1{
+    font-size: 2em;
+    font-family: "Yu Gothic UI Light", "Tempus Sans ITC", "Times New Roman", sans-serif;
+    padding: 0.5em 0;
+}
+form{
+    padding: 2em;
+}
+#recherche_sortie div{
+    padding: 0.2em 0;
+}
+/*----------------------------footer---------------------------------*/
+footer{
+    display: flex;
+    padding: 7em;
+}
+
