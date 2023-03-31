@@ -18,6 +18,7 @@ use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 
-
+#[AsEventListener(Etat::class)]
 #[IsGranted("ROLE_USER")]
 #[Route('/sortie')]
 class SortieController extends AbstractController
@@ -120,16 +121,29 @@ class SortieController extends AbstractController
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
-    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
-        $user = $this->getUser();
-        $inscription = new inscription();
-        $inscription->setSortieId($sortieRepository->find($sortie->getId()));
-        $inscription->setUserId($userRepository->find($user->getId()));
-        $inscription->setDateInscription(new \DateTime());
-        $entityManager->persist($inscription);
-        $entityManager->flush();
+        $datedujour=new \DateTime();
+        $datedefin= $sortie->getDatecloture();
 
+        if ($datedujour<$datedefin){
+            $user = $this->getUser();
+            $inscription = new inscription();
+            $inscription->setSortieId($sortieRepository->find($sortie->getId()));
+            $inscription->setUserId($userRepository->find($user->getId()));
+            $inscription->setDateInscription($datedujour);
+            $entityManager->persist($inscription);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('_list');
+        }
+//        else{
+//            $etat = $etatRepository->find(3);
+//            $sortie->setEtat($sortieRepository->find($etat));
+//            $entityManager->persist($sortie);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('_list');
+//        }
         return $this->redirectToRoute('_list');
     }
 
