@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
@@ -27,18 +28,19 @@ class SortieController extends AbstractController
 {
     #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
+                                EtatRepository $etatRepository,
                                 Request $request,
-                                EntityManagerInterface $em): Response
+                                ): Response
     {
-        $sorties = $sortieRepository->findAll();
-
+//        $sorties = $sortieRepository->findAll();
+        $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
         $user = $this->getUser();
         $form = $this->createForm(SearchType::class,$rechercheSortie);
         $form->handleRequest($request);
 
             return $this->render('sortie/liste.html.twig', [
-                'sorties' => $sortieRepository->search($rechercheSortie, $user),
+                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse),
                 'form' => $form
             ]);
     }

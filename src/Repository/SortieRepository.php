@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\User;
@@ -41,7 +42,7 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function search(rechercheSortie $recherche, User $user) :array
+    public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
     {
             $sorties= $this->createQueryBuilder('s');
 
@@ -78,33 +79,33 @@ class SortieRepository extends ServiceEntityRepository
 
             }
 
-            if(!empty ($recherche->getOrganisateur())){
+            if($recherche->getOrganisateur()){
                 $sorties = $sorties
-                    ->andWhere('s.organisateur = :organisateur')
+                    ->orWhere('s.organisateur = :organisateur')
                     ->setParameter('organisateur',$user)
                     ->orderBy('s.datedebut','ASC');
             }
 
-            if(!empty ($recherche->getInscrit())){
+            if($recherche->getInscrit()){
                 $sorties = $sorties
-                    ->andWhere(':user MEMBER OF s.inscriptions')
+                    ->orWhere(':user MEMBER OF s.inscriptions')
                     ->setParameter('user',$user)
                     ->orderBy('s.datedebut','ASC');
             }
 
-            if(!empty ($recherche->getNoninscrit())){
+            if($recherche->getNoninscrit()){
                 $sorties = $sorties
-                    ->andWhere(':user NOT MEMBER OF s.inscriptions')
+                    ->orWhere(':user NOT MEMBER OF s.inscriptions')
                     ->setParameter('user',$user)
                     ->orderBy('s.datedebut','ASC');
             }
 
-          //TODO:  if(!empty ($recherche->getSortiepassee())){
-//                $sorties = $sorties
-//                    ->andWhere('s.organisateur = :organisateur')
-//                    ->setParameter('organisateur',$user)
-//                    ->orderBy('s.datedebut','ASC');
-//            }
+            if(!empty ($recherche->getSortiepassee())){
+                $sorties = $sorties
+                    ->orWhere('s.etat = :passee')
+                    ->setParameter('passee', $etatpasse)
+                    ->orderBy('s.datedebut','ASC');
+            }
 
 
         return $sorties ->getQuery()->getResult();
