@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Etat;
 use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Inscription;
@@ -8,7 +10,6 @@ use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SearchType;
-use App\Form\RechercheSortieType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\InscriptionRepository;
@@ -32,29 +33,21 @@ class SortieController extends AbstractController
 {
     #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
+                                EtatRepository $etatRepository,
                                 Request $request,
-                                EntityManagerInterface $em): Response
+                                ): Response
     {
-        $sorties = $sortieRepository->findAll();
-
+//        $sorties = $sortieRepository->findAll();
+        $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
+        $user = $this->getUser();
         $form = $this->createForm(SearchType::class,$rechercheSortie);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-            $sorties = $sortieRepository->search($rechercheSortie);
-            //return $this->redirectToRoute('_list', compact('sorties','form'));
-
-
-
-            } catch (\Exception $exception) {
-                return $this->redirectToRoute('_list');
-            }
-        }
-            return $this->render('sortie/liste.html.twig',
-               compact('sorties','form')
-            );
+            return $this->render('sortie/liste.html.twig', [
+                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse),
+                'form' => $form
+            ]);
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
