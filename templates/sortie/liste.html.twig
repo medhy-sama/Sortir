@@ -8,15 +8,23 @@
         <h1> Filtrer les sorties </h1>
             <div class="form_search" {{ stimulus_controller('serch-preview', { url: path('_list')}) }}>
                 {{ form_start(form) }}
+                <div class="form_block">
                 {{ form_row(form.campus)}}
                 <div class="form-control" data-action="search-preview#onSearchInput">{{ form_row(form.q)}} </div>
+                <div class="form_date">
                 {{ form_row(form.datemin)}}
                 {{ form_row(form.datemax)}}
+                </div>
+                </div>
+                <div class="form_block">
                 {{ form_row(form.organisateur)}}
                 {{ form_row(form.inscrit)}}
                 {{ form_row(form.nonInscrit)}}
                 {{ form_row(form.sortiePassee)}}
+                </div>
+                <div class="form_block">
                 <button>Filtrer</button>
+                </div>
                 {{ form_end(form) }}
             </div>
 

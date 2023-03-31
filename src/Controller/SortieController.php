@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Controller;
+
+use App\Entity\Etat;
 use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Inscription;
@@ -9,7 +11,6 @@ use App\Entity\Sortie;
 use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\SearchType;
-use App\Form\RechercheSortieType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\InscriptionRepository;
@@ -19,6 +20,7 @@ use App\Repository\SortieRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,36 +30,28 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-
+#[AsEventListener(Etat::class)]
 #[IsGranted("ROLE_USER")]
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
     #[Route('/', name: '_list', methods: ['GET','POST'])]
     public function listeSortie(SortieRepository $sortieRepository,
+                                EtatRepository $etatRepository,
                                 Request $request,
                                 ): Response
     {
-        $sorties = $sortieRepository->findAll();
-
+//        $sorties = $sortieRepository->findAll();
+        $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
+        $user = $this->getUser();
         $form = $this->createForm(SearchType::class,$rechercheSortie);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-            $sorties = $sortieRepository->search($rechercheSortie);
-            //return $this->redirectToRoute('_list', compact('sorties','form'));
-
-
-
-            } catch (\Exception $exception) {
-                return $this->redirectToRoute('_list');
-            }
-        }
-            return $this->render('sortie/liste.html.twig',
-               compact('sorties','form')
-            );
+            return $this->render('sortie/liste.html.twig', [
+                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse),
+                'form' => $form
+            ]);
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
@@ -130,16 +124,29 @@ class SortieController extends AbstractController
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
-    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
-        $user = $this->getUser();
-        $inscription = new inscription();
-        $inscription->setSortieId($sortieRepository->find($sortie->getId()));
-        $inscription->setUserId($userRepository->find($user->getId()));
-        $inscription->setDateInscription(new \DateTime());
-        $entityManager->persist($inscription);
-        $entityManager->flush();
+        $datedujour=new \DateTime();
+        $datedefin= $sortie->getDatecloture();
 
+        if ($datedujour<$datedefin){
+            $user = $this->getUser();
+            $inscription = new inscription();
+            $inscription->setSortieId($sortieRepository->find($sortie->getId()));
+            $inscription->setUserId($userRepository->find($user->getId()));
+            $inscription->setDateInscription($datedujour);
+            $entityManager->persist($inscription);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('_list');
+        }
+//        else{
+//            $etat = $etatRepository->find(3);
+//            $sortie->setEtat($sortieRepository->find($etat));
+//            $entityManager->persist($sortie);
+//            $entityManager->flush();
+//            return $this->redirectToRoute('_list');
+//        }
         return $this->redirectToRoute('_list');
     }
 
