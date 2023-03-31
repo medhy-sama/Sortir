@@ -51,18 +51,4 @@ dd($userForm->get('password'));
         return $this->render('main/modifier.html.twig',compact('userForm'));
     }
 
-
-//Wish $wish,
-//EntityManagerInterface $entityManager,
-//Request $request
-//): Response {
-//$wishForm = $this->createForm(ListeSouhaitsType::class, $wish);
-//$wishForm->handleRequest($request);
-//if ($wishForm->isSubmitted() && $wishForm->isValid()) {
-//$entityManager->persist($wish);
-//$entityManager->flush();
-//
-//return $this->redirectToRoute('wish_affiche_list');
-//}
-
 }

@@ -97,6 +97,11 @@ class Lieu
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->nom_lieu;
+    }
+
     /**
      * @return Collection<int, Sortie>
      */
