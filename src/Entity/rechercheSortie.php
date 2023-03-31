@@ -16,11 +16,11 @@ class rechercheSortie
 
     private ?\DateTimeInterface $datemax = null;
 
-    private ?bool $organisateur =true;
+    private ?bool $organisateur =false;
 
-    private ?bool $inscrit = true;
+    private ?bool $inscrit = false;
 
-    private ?bool $noninscrit = true;
+    private ?bool $noninscrit = false;
 
     private ?bool $sortiepassee = false;
 

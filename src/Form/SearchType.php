@@ -18,15 +18,10 @@ class SearchType extends AbstractType
     {
         $builder
             ->add('campus', EntityType::class,[
-                'label'=> 'Campus ',
-                'required'=>'false',
+                'required'=>false,
                 'class'=>Campus::class,
-                'empty_data'=>null,
-                'choice_label'=>'nom',
                 'mapped' => true,
-                'attr'=>[
-                    'placeholder' => '',
-                ]
+                'placeholder' => '',
 
             ])
             ->add('q', TextType::class,[
