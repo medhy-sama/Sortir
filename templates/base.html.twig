@@ -24,9 +24,11 @@
             <ul>
                 <li><a href="">Villes</a></li>
                 <li><a href="">Campus</a></li>
-                <li><a href="">Accueil</a></li>
+                <li><a href="{{ path('_index') }}">Accueil</a></li>
+                <li><a href="{{ path('_list') }}">Sorties</a></li>
                 {% if app.user %}<li><a href="{{ path('_afficher')}}">Mon profil</a></li>{% endif %}
                 <li><a href="{{ app.user ? path('logout_logout') : path('login_login') }}">{{ app.user ? 'Déconnexion' : 'Connexion' }}</a></li>
+                {% if app.user %}<li id="userHome">Vous êtes connecté avec le compte "{{ app.user.username }}"</li>{% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('admin') }}">Admin</a></li>
                 {% endif %}
