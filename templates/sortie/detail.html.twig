@@ -34,7 +34,7 @@
 
                 {% for chaqueInscription in inscriptions %}
                 <tr>
-                    <td> <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueInscription.userId.username}}</td>
+                    <td> {{ chaqueInscription.userId.username}}</td>
                     <td>{{ chaqueInscription.userId.prenom }} {{ chaqueInscription.userId.nom }}</td>
                 </tr>
                 {% endfor %}

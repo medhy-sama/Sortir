@@ -1,0 +1,10 @@
+{% for success in app.flashes('success') %}
+            <div class="mess_success">
+                {{ success }}
+            </div>
+{% endfor %}
+{% for error in app.flashes('error') %}
+    <div class="mess_error">
+        {{ error }}
+    </div>
+{% endfor %}

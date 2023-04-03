@@ -55,7 +55,22 @@ class SortieRepository extends ServiceEntityRepository
                     ->orderBy('s.datedebut','ASC');
             }
 
+/*        if($recherche->getNoninscrit()){
+            $sorties = $sorties
+                ->Where('i.user_id != :user')
+                ->andWhere('i.user_id = :user')
+                ->orWhere('i.user_id IS NULL')
+                ->setParameter('user',$user->getId())
+                ->orderBy('s.datedebut','ASC');
+        }*/
 
+        if($recherche->getNoninscrit()){
+            $sorties = $sorties
+                ->orWhere('i.user_id != :user')
+                ->orWhere('i.user_id IS NULL')
+                ->setParameter('user',$user->getId())
+                ->orderBy('s.datedebut','ASC');
+        }
 
             if($recherche->getInscrit()){
                 $sorties = $sorties
@@ -65,13 +80,7 @@ class SortieRepository extends ServiceEntityRepository
 
             }
 
-            if($recherche->getNoninscrit()){
-                $sorties = $sorties
-                    ->orWhere('i.user_id != :user')
-                    ->orWhere('i.user_id IS NULL')
-                    ->setParameter('user',$user->getId())
-                    ->orderBy('s.datedebut','ASC');
-            }
+
 
 
             if(!empty ($recherche->getSortiepassee())){
