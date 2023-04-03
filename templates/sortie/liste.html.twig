@@ -55,7 +55,7 @@
                     Non Inscrit
                  {% endif%}
         </td>
-        <td>{{ chaqueSortie.organisateur.username}}</td>
+        <td><a href="{{ path('_profil_inscrit', {'id': chaqueSortie.organisateur.id}) }}">{{ chaqueSortie.organisateur.username}}</a></td>
         <td>
             {% if app.user != chaqueSortie.organisateur  %}
                 <a href="{{ path('_detail',{'sortie': chaqueSortie.id})}}">Afficher</a>

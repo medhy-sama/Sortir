@@ -63,19 +63,20 @@ class SortieController extends AbstractController
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sortie->setOrganisateur($this->getUser());
-            $sortie->setEtat($etatRepository->find(1));
-            $em->persist($sortie);
-            $em->flush();
-            $this->addFlash('succes', 'Votre sortie a été enregistré');
-            return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
-//            try {
-//
-//            } catch (\Exception $exception) {
-//                return $this->redirectToRoute('_creer');
-//            }
-        }
+
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $sortie->setOrganisateur($this->getUser());
+                $sortie->setEtat($etatRepository->find(1));
+                $em->persist($sortie);
+                $em->flush();
+                $this->addFlash('succes', 'Votre sortie a été enregistré');
+                return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
+            }
+        } catch (\Exception $exception) {
+            $this->addFlash('error', 'Votre sortie n\'a pas été enregistré');
+            return $this->redirectToRoute('_creer');
+            }
         return $this->render('sortie/creer.html.twig', compact('sortie','form')
         );
     }

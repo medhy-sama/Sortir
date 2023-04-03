@@ -29,22 +29,37 @@ class MainController extends AbstractController
     #[Route('/compte', name: '_afficher')]
     public function afficher(): Response
     {
-        $message='';
+        $message = '';
         return $this->render('main/compte.html.twig', compact('message')
         );
     }
 
     #[IsGranted("ROLE_USER")]
-    #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
-    public function modifier(User $user, EntityManagerInterface $entityManager,Request $request, User $id, UserRepository $userRepository): Response
+    #[Route('/compte/{id}',
+        name: '_profil_inscrit',
+        requirements: ['id' => '\d+']
+    )]
+    public function afficher_profil(
+        User $user,
+    ): Response
     {
-        $userForm =$this->createForm(UserType::class, $user);
+        $message = '';
+
+        return $this->render('main/profil_inscrit.html.twig', compact('message', 'user')
+        );
+    }
+
+    #[IsGranted("ROLE_USER")]
+    #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
+    public function modifier(User $user, EntityManagerInterface $entityManager, Request $request, User $id, UserRepository $userRepository): Response
+    {
+        $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
 
         $val1 = $userRepository->find($id);
-        if ($userForm->isSubmitted() and $userForm->isValid()){
-            $val2=password_verify($userForm->get('password')->getData(),$val1->getPassword()) ;
-            if (($val1->getPassword()) == $val2){
+        if ($userForm->isSubmitted() and $userForm->isValid()) {
+            $val2 = password_verify($userForm->get('password')->getData(), $val1->getPassword());
+            if (($val1->getPassword()) == $val2) {
                 dump($val2);
                 dump($val1);
                 $entityManager->persist($id);
@@ -53,10 +68,10 @@ class MainController extends AbstractController
                 return $this->render('main/compte.html.twig', compact('message'));
             }
             $message = "Votre mot de passe n'est pas bien renseigné !!!";
-            return $this->render('main/modifier.html.twig',compact('userForm', 'message'));
-            }
-$message='';
-        return $this->render('main/modifier.html.twig',compact('userForm', 'message'));
+            return $this->render('main/modifier.html.twig', compact('userForm', 'message'));
+        }
+        $message = '';
+        return $this->render('main/modifier.html.twig', compact('userForm', 'message'));
     }
 
 }
