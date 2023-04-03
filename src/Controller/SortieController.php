@@ -6,7 +6,6 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
-use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\SearchType;
 use App\Form\SortieType;
@@ -22,9 +21,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
