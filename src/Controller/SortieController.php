@@ -36,7 +36,6 @@ class SortieController extends AbstractController
                                 Request $request,
                                 ): Response
     {
-//        $sorties = $sortieRepository->findAll();
         $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
         $user = $this->getUser();
@@ -84,10 +83,11 @@ class SortieController extends AbstractController
     #[Route('/{sortie}', name: '_detail', methods: ['GET'])]
     public function show(Sortie $sortie): Response
     {
+        $inscriptions = $sortie->getInscriptions();
 
 
         return $this->render('sortie/detail.html.twig',
-            compact('sortie'));
+            compact('sortie','inscriptions'));
     }
 
     #[Route('/edit/{id}', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
