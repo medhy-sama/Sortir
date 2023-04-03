@@ -45,7 +45,8 @@ class SortieRepository extends ServiceEntityRepository
     public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
     {
             $sorties= $this->createQueryBuilder('s')
-                ->leftJoin('s.inscriptions','i');
+                ->leftjoin('s.inscriptions','i');
+
 
 
             if(!empty($recherche->getQ())){
@@ -100,7 +101,8 @@ class SortieRepository extends ServiceEntityRepository
 
             if($recherche->getNoninscrit()){
                 $sorties = $sorties
-                    ->orWhere('i.user_id != :user')
+                    ->innerjoin('s.inscriptions','i')
+                    ->orWhere(':user NOT MEMBER OF s.inscriptions')
                     ->setParameter('user',$user->getId())
                     ->orderBy('s.datedebut','ASC');
             }
