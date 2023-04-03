@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Etat;
 use App\Entity\Campus;
-use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
