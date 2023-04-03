@@ -6,7 +6,6 @@ use App\Entity\Etat;
 use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
-use App\Entity\User;
 use App\Entity\Ville;
 use App\Form\SearchType;
 use App\Form\SortieType;
@@ -22,9 +21,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -39,7 +36,6 @@ class SortieController extends AbstractController
                                 Request $request,
                                 ): Response
     {
-//        $sorties = $sortieRepository->findAll();
         $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
         $user = $this->getUser();
@@ -87,10 +83,11 @@ class SortieController extends AbstractController
     #[Route('/{sortie}', name: '_detail', methods: ['GET'])]
     public function show(Sortie $sortie): Response
     {
+        $inscriptions = $sortie->getInscriptions();
 
 
         return $this->render('sortie/detail.html.twig',
-            compact('sortie'));
+            compact('sortie','inscriptions'));
     }
 
     #[Route('/edit/{id}', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
@@ -127,7 +124,7 @@ class SortieController extends AbstractController
         $datedujour=new \DateTime();
         $datedefin= $sortie->getDatecloture();
 
-        if ($datedujour<$datedefin){
+//        if ($datedujour<$datedefin){
             $user = $this->getUser();
             $inscription = new inscription();
             $inscription->setSortieId($sortieRepository->find($sortie->getId()));
@@ -137,7 +134,7 @@ class SortieController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('_list');
-        }
+//        }
 //        else{
 //            $etat = $etatRepository->find(3);
 //            $sortie->setEtat($sortieRepository->find($etat));
@@ -145,7 +142,7 @@ class SortieController extends AbstractController
 //            $entityManager->flush();
 //            return $this->redirectToRoute('_list');
 //        }
-        return $this->redirectToRoute('_list');
+//        return $this->redirectToRoute('_list');
     }
 
     #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
@@ -163,7 +160,7 @@ class SortieController extends AbstractController
     #[Route('/desiter/{sortie}', name: '_desister', methods: ['GET'])]
     public function deinscription( InscriptionRepository $inscriptionRepository, EntityManagerInterface $entityManager): Response
     {
-            $inscription = $inscriptionRepository->findOneBy(['user_id' => $this->getUser()->getId()]);
+        $inscription = $inscriptionRepository->findOneBy(['user_id' => $this->getUser()->getId()]);
         $user= $this->getUser();
         $user->removeInscription($inscription);
         $entityManager->remove($inscription);

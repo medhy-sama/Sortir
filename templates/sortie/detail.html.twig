@@ -22,15 +22,27 @@
             {{ sortie.etat.libelle }}
             {{ sortie.organisateur.username}}
         </div>
-
-
-
-
-
-
-
-
     </section>
+
+        <h1>Participants</h1>
+
+        <table class="table table-responsive">
+            <tr>
+                <th>Pseudo</th>
+                <th>Nom</th>
+            </tr>
+
+                {% for chaqueInscription in inscriptions %}
+                <tr>
+                    <td> <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueInscription.userId.username}}</td>
+                    <td>{{ chaqueInscription.userId.prenom }} {{ chaqueInscription.userId.nom }}</td>
+                </tr>
+                {% endfor %}
+
+        </table>
+
+
+
 
 
     <a href="{{ path('_list') }}">Retourner à liste des sorties</a>
