@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{#{{ form_start(form) }}#}
-{#    {{ form_widget(form)}}#}
-{#    {{ form_end(form) }}#}
+{{ form_start(form) }}
+    {{ form_widget(form)}}
+    <button>Valider le motif</button>
+    {{ form_end(form) }}
 {% endblock %}
 
 {% block title %}

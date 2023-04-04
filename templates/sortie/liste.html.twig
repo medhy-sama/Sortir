@@ -31,7 +31,10 @@
             </div>
 
         <h2>Liste des sorties</h2>
-
+        {% if sorties is empty %}
+            <p class="none_result">Aucun resultat</p>
+        {% endif %}
+        {% if sorties is not empty %}
     <table class="table table-responsive">
     <tr>
         <th>Sortie</th>
@@ -44,8 +47,11 @@
         <th>Actions</th>
     </tr>
         <div class="list-group-item" data-search-preview-target="result">
-    {% for chaqueSortie in sorties %}
+            {% for chaqueSortie in sorties %}
+
+        {% if sorties is not null %}
         <tr>
+
         <td> <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}</td>
         <td>{{ chaqueSortie.datedebut | date('d/m/y H:i')}}</td>
         <td>{{ chaqueSortie.dateCloture | date('d/m/y H:i')}}</td>
@@ -81,9 +87,12 @@
             {% endif %}
         </td>
     </tr>
+        {% endif %}
+
     {% endfor %}
         </div>
     </table>
+        {% endif %}
     </div>
 
 

@@ -69,6 +69,28 @@ html{
 .mess_error{
     color: #B0413E;
 }
+
+/*.cadre-table-scroll {*/
+/*    display: inline-block;*/
+/*    height: 20em;*/
+/*    overflow-y: scroll;*/
+/*}*/
+/*.table-scroll thead th {*/
+/*    position: sticky;*/
+/*    top: 0;*/
+/*}*/
+/*.table-scroll tfoot td {*/
+/*    position: sticky;*/
+/*    bottom: 0;*/
+/*}*/
+
+
+
+.table{
+    height: 20em;
+    overflow-y: scroll;
+}
+
 /*----------------------------css stephane---------------------------------*/
 /*ul {*/
 /*    display: flex;*/
@@ -96,7 +118,7 @@ html{
 header{
     display: flex;
 
-    padding: 7em;
+    padding: 7em 7em 0 7em;
 }
 #logo{
     width: 30%;
@@ -124,7 +146,7 @@ nav a {
 
 /*----------------------------main---------------------------------*/
 main{
-    padding: 7em;
+    padding: 2em 7em 7em 7em;
 }
 h1{
     font-size: 2em;
