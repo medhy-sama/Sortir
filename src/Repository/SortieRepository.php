@@ -46,44 +46,7 @@ class SortieRepository extends ServiceEntityRepository
     {
             $sorties= $this->createQueryBuilder('s')
                             ->leftjoin('s.inscriptions','i');
-//                            ->andWhere('s.etat != 7');
 
-
-//        select * from sortie where id NOT IN (SELECT sortie_id_id from inscription where user_id_id =3)
-
-
-
-
-
-
-
-
-
-
-
-
-//                $dql = "SELECT s  WHERE user_id = :user ";
-//            if($recherche->getNoninscrit()){
-////                $sorties
-//
-//                    $sorties->where($sorties->expr()->notIn('s.id', function($subQueryBuilder) :array {
-//                        $subQueryBuilder->select('i.sortie_id_id')
-//                            ->from('App\Entity\Inscription', 'i')
-//                            ->where('i.user_id_id = :user_id');
-//                    }))
-//                        ->setParameter('user', $user->getId());
-////                    ->orWhere($sorties->expr()->notIn('s.id', $sorties))
-//
-////                        function ($subsorties){
-////                                $subsorties -> select('i.sortie_id_id')
-////                            -> from('i')
-////                            -> where('i.user_id_id = :user');
-////
-////                    }))
-////                        ->setParameter('user',$user->getId());
-//
-//
-//            }
 
             if($recherche->getOrganisateur()){
                 $sorties
@@ -101,27 +64,10 @@ class SortieRepository extends ServiceEntityRepository
 
             }
 
-//            if($recherche->getNoninscrit()){
-//                $subquery = $sorties
-//                    ->select('i.sortie_id')
-//                    ->where('i.user_id = :user')
-//                    ->setParameter('user', $user->getId());
-//                $sorties-> orWhere($sorties->expr()->notIn('s.id',$subquery));
-//            }
-
-            if($recherche->getNoninscrit()){
-//                $sorties
-//                    ->orWhere($sorties->expr()->notIn('s.id', $dql));
-                $sousSorties = $sorties -> where( $sorties ->expr()->eq('i.user_id',':user'));
-
-
-                $sorties = $sorties ->select('s')
-
-                    ->from(Sortie::class,'s')
-                    ->where($sorties->expr()->notIn('i.user_id',$sousSorties));
-//                    ->getQuery()->getResult();
-
-            }
+            if ($recherche->getNoninscrit()){
+            $sorties
+                ->orWhere('i.user_id IS NULL');
+        }
 
 
             if(!empty ($recherche->getSortiepassee())){
@@ -162,7 +108,9 @@ class SortieRepository extends ServiceEntityRepository
                     ->setParameter('datemax',$recherche->getDatemax());
 
             }
-            $sorties ->orderBy('s.datedebut','ASC');
+            $sorties
+                ->andWhere('s.etat != 7')
+                ->orderBy('s.datedebut','ASC');
         return $sorties ->getQuery()->getResult();
     }
 }
