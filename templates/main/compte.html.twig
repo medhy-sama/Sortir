@@ -7,6 +7,8 @@
             <article>
                 {% if message %}
                     <div>{{ message }}</div>{% endif %}
+                <p>Votre photo de profil : </p>
+                <img src="{{ asset('uploads/users/' ~app.user.photo ) }}" alt="User-Photo_profil">
                 <p>Votre pseudo : </p>
                 <p><strong>{{ app.user.username }}</strong></p>
                 <p>Votre nom : </p>
