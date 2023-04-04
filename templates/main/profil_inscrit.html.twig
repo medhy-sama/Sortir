@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if user.id %}
+        <div id="conteneur">
+
+            <article>
+                {% if message %}
+                    <div>{{ message }}</div>{% endif %}
+                <p>Votre pseudo : </p>
+                <p><strong>{{ user.username }}</strong></p>
+                <p>Votre nom : </p>
+                <p><strong>{{ user.nom }}</strong></p>
+                <p>Votre prenom : </p>
+                <p><strong>{{ user.prenom }}</strong></p>
+                <p>Votre numéro de téléphone : </p>
+                <p><strong>{{ user.telephone }}</strong></p>
+                <p>Votre email : </p>
+                <p><strong>{{ user.mail }}</strong></p>
+            </article>
+
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

@@ -34,7 +34,7 @@
 
                 {% for chaqueInscription in inscriptions %}
                 <tr>
-                    <td> {{ chaqueInscription.userId.username}}</td>
+                    <td><a href="{{ path('_profil_inscrit',{'id':chaqueInscription.userId.id}) }}">{{ chaqueInscription.userId.username}}</a></td>
                     <td>{{ chaqueInscription.userId.prenom }} {{ chaqueInscription.userId.nom }}</td>
                 </tr>
                 {% endfor %}
