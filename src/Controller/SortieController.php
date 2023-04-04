@@ -7,6 +7,7 @@ use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Form\AnnulerSortieType;
 use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
@@ -193,6 +194,21 @@ class SortieController extends AbstractController
     }
 
 
+    #[Route('/annuler', name: '_motif_annuler', methods: ['GET'])]
+    public function motif_annulation(Sortie $sortie, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, Request $request): Response
+    {
+        $form = $this->createForm(AnnulerSortieType::class, $sortie);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sortie->setMotif($request->request->get('motif'));
+//            dd($sortie);
+            return $this->redirectToRoute('_annuler',compact('sortie'));
+        }
+        return $this->render('sortie/annuler.html.twig', compact('form'));
+    }
+
+
+
     #[Route('/annuler/{sortie}', name: '_annuler', methods: ['GET'])]
     public function annulation(Sortie $sortie, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
@@ -200,11 +216,14 @@ class SortieController extends AbstractController
         $datedujour = new \DateTime();
         $etat = $sortie->getEtat()->getId();
         if ($datededbut>$datedujour){
-            if ($etat == 2 or $etat == 3)
-            $sortie->setEtat($etatRepository->find(6));
-            $entityManager->persist($sortie);
-            $entityManager->flush();
-            $this->addFlash('success', 'Vous avez annuler la sortie');
+            if ($etat == 2 or $etat == 3){
+                $sortie->setEtat($etatRepository->find(6));
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+                $this->addFlash('success', 'Vous avez annuler la sortie');
+                return $this->redirectToRoute('_list');
+            }
+            $this->addFlash('error', 'Vous ne pouvez pas publier la sortie');
             return $this->redirectToRoute('_list');
         }
         else{

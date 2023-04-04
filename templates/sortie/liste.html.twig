@@ -73,7 +73,7 @@
                     <a href="{{ path('_publier',{'sortie': chaqueSortie.id})}}"> - Publier</a>
             {% endif %}
                 {% if chaqueSortie.etat.id == 2 %}
-                    <a href="{{ path('_annuler',{'sortie': chaqueSortie.id})}}"> - Annuler</a>
+                    <a href="{{ path('_motif_annuler',{'sortie': chaqueSortie.id})}}"> - Annuler</a>
                 {% endif %}
             {% endif %}
             {% if chaqueSortie.estInscrit(app.user) == 1 and chaqueSortie.etat.id != 6  %}
