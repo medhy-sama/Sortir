@@ -45,84 +45,72 @@ class SortieRepository extends ServiceEntityRepository
     public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
     {
             $sorties= $this->createQueryBuilder('s')
-                            ->leftjoin('s.inscriptions','i')
-                            ->where('s.etat != 7');
+                            ->leftjoin('s.inscriptions','i');
 
 
             if($recherche->getOrganisateur()){
-                $sorties = $sorties
-                    ->andWhere('s.organisateur = :organisateur')
-                    ->setParameter('organisateur',$user)
-                    ->orderBy('s.datedebut','ASC');
-            }
+                $sorties
+                    ->orWhere('s.organisateur = :organisateur')
+                    ->setParameter('organisateur',$user);
 
-/*        if($recherche->getNoninscrit()){
-            $sorties = $sorties
-                ->Where('i.user_id != :user')
-                ->andWhere('i.user_id = :user')
-                ->orWhere('i.user_id IS NULL')
-                ->setParameter('user',$user->getId())
-                ->orderBy('s.datedebut','ASC');
-        }*/
+                 }
 
-        if($recherche->getNoninscrit()){
-            $sorties = $sorties
-                ->orWhere('i.user_id != :user')
-                ->orWhere('i.user_id IS NULL')
-                ->setParameter('user',$user->getId())
-                ->orderBy('s.datedebut','ASC');
-        }
 
             if($recherche->getInscrit()){
-                $sorties = $sorties
+                $sorties
                     ->orWhere('i.user_id = :user')
-                    ->setParameter('user',$user->getId())
-                    ->orderBy('s.datedebut','ASC');
+                    ->setParameter('user',$user->getId());
+
 
             }
 
-
+            if ($recherche->getNoninscrit()){
+            $sorties
+                ->orWhere('i.user_id IS NULL');
+        }
 
 
             if(!empty ($recherche->getSortiepassee())){
-                $sorties = $sorties
+                $sorties
                     ->orWhere('s.etat = :passee')
-                    ->setParameter('passee', $etatpasse)
-                    ->orderBy('s.datedebut','ASC');
+                    ->setParameter('passee', $etatpasse);
+
             }
-        if(!empty($recherche->getQ())){
-            $sorties = $sorties
-                ->andWhere('s.nom LIKE :searchTerm')
-                ->setParameter('searchTerm', '%'.($recherche->getQ()).'%')
-                ->orderBy('s.datedebut','DESC');
 
-        }
 
-        if(!empty ($recherche->getCampus())){
-            $sorties = $sorties
-                ->andWhere('s.campus = :campus')
-                ->setParameter('campus', $recherche->getCampus())
+            if(!empty($recherche->getQ())){
+                $sorties
+                    ->andWhere('s.nom LIKE :searchTerm')
+                    ->setParameter('searchTerm', '%'.($recherche->getQ()).'%');
+
+
+            }
+
+            if(!empty ($recherche->getCampus())){
+                $sorties
+                    ->andWhere('s.campus = :campus')
+                    ->setParameter('campus', $recherche->getCampus());
+
+
+            }
+
+            if(!empty($recherche->getDatemin())){
+                $sorties
+                    ->andWhere('s.datedebut >= :datemin')
+                    ->setParameter('datemin',$recherche->getDatemin());
+
+
+            }
+
+            if(!empty($recherche->getDatemax())){
+                $sorties
+                    ->andWhere('s.datedebut <= :datemax')
+                    ->setParameter('datemax',$recherche->getDatemax());
+
+            }
+            $sorties
+                ->andWhere('s.etat != 7')
                 ->orderBy('s.datedebut','ASC');
-
-        }
-
-        if(!empty($recherche->getDatemin())){
-            $sorties = $sorties
-                ->andWhere('s.datedebut >= :datemin')
-                ->setParameter('datemin',$recherche->getDatemin())
-                ->orderBy('s.datedebut','ASC');
-
-        }
-
-        if(!empty($recherche->getDatemax())){
-            $sorties = $sorties
-                ->andWhere('s.datedebut <= :datemax')
-                ->setParameter('datemax',$recherche->getDatemax())
-                ->orderBy('s.datedebut','ASC');
-
-        }
-
-
         return $sorties ->getQuery()->getResult();
     }
 }
