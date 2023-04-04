@@ -57,6 +57,11 @@ table {
 
 
 /*----------------------------defaut---------------------------------*/
+@keyframes sun {
+    to {
+        background-position: 200% center;
+    }
+}
 main{
     margin: 0 auto;
 }
@@ -84,12 +89,88 @@ html{
 /*    bottom: 0;*/
 /*}*/
 
+button{
+    padding: 0.5em;
+    border-radius: 8px;
+    cursor: pointer;
+}
 
+button:hover{
+    background-color: #CD5334;
+    color: #FFFFFF;
+}
+
+input{
+    padding: 0.5em;
+    border-radius: 8px;
+}
+input:focus::placeholder{
+    color: #FFFFFF;
+}
+input:focus{
+    background-color: #CD5334;
+    color: #FFFFFF;
+}
+select{
+    padding: 0.5em;
+    border-radius: 8px;
+    width: 14em;
+    margin: 0 0.5em ;
+}
+select:focus{
+    background-color: #CD5334;
+    color: #FFFFFF;
+}
 
 .table{
     height: 20em;
     overflow-y: scroll;
+
 }
+::-webkit-scrollbar {
+    width: 1em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #640000;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb{
+    background: #CD5334 ;
+    border-radius: 10px;
+}
+
+#form_connexion{
+    display: flex;
+    width: 25%;
+    flex-flow: column;
+    margin: 0 auto;
+}
+#form_connexion input{
+margin: 0.5em 0;
+}
+#form_connexion .form_footer{
+     display: inline-block;
+ }
+#form_connexion .form_footer button{
+    margin-right: 1em;
+}
+#form_connexion div{
+   display: flex ;
+    flex-flow: column;
+
+}
+a{
+    text-decoration: none;
+    color: #CD5334;
+    font-weight: bold;
+}
+a:hover{
+    color: #fb1207;
+    font-weight: bold;
+}
+
 
 /*----------------------------css stephane---------------------------------*/
 /*ul {*/
@@ -116,25 +197,68 @@ html{
 /*----------------------------header---------------------------------*/
 
 header{
+border-bottom: 1px solid #ae8f8f;
+    padding: 4em 7em 2em 7em;
+}
+#header_top{
+    margin-bottom: 2em;
+}
+#header_footer{
     display: flex;
-
-    padding: 7em 7em 0 7em;
+    justify-content: center;
 }
 #logo{
+    display: flex;
     width: 30%;
 }
+.img_logo{
+    width: 5em;
+    height: 5em;
+    margin-right: 1em;
+}
+.logo{
+    font-weight: revert;
+    background: linear-gradient(to right , #fc2f00, #c00000, #be1c00, #fc2f00);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sun 2s linear infinite;
+}
+.img_user{
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+}
+#header_footer a{
+    text-decoration: none;
+    color: #CD5334;
+}
+#userHome img{
+    display: block;
+    margin: 0 auto;
+}
+nav{
+    display: flex;
+    align-content: center;
+    margin: 0 auto;
+    vertical-align: center;
+}
 nav ul{
-        display: flex;
-        justify-content: center;
+    display: flex;
+    align-content: center;
 }
 nav li {
+    display: flex;
+    align-items: center;
     padding: 0 2em;
     list-style-type: none;
     font-family: "MS UI Gothic", sans-serif;
     font-size: 1.2em;
     font-weight: bold;
     color: black;
-    width: 80%;
+    height: 100%;
+    vertical-align: center;
+
 }
 
 nav a {
@@ -142,6 +266,7 @@ nav a {
     text-decoration-color: black;
     font-size: 18px;
     font-family: "JetBrains Mono Light", sans-serif;
+
 }
 
 /*----------------------------main---------------------------------*/
@@ -174,9 +299,6 @@ form{
 display: flex;
     justify-content: space-between;
 }
-#search_campus{
-    margin-left: 2em;
-}
 .form_block div{
     margin: 0.3em 0;
 }
@@ -193,27 +315,25 @@ th{
     font-family: "Yu Gothic UI Light", "Tempus Sans ITC", "Times New Roman", sans-serif;
     padding: 0.5em 0;
 }
-tbody{
 
-}
 td{
     padding: 0.8em 1.2em;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 td:hover{
-    background-color: #d5d5d5;
+    background-color: #e1c9c9;
 }
 tr:hover{
     background-color: #f6f6f6;
 }
 tr{
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 table{
     display: flex;
     justify-content: center;
-    border: 3px solid black;
+    border: 3px solid #ffa8a8;
     border-radius: 10px;
     padding: 1em;
     margin-bottom: 0.5em;
@@ -222,6 +342,14 @@ table{
     display: flex;
     justify-content: center;
 
+}
+.form_block input[type="checkbox"]{
+    background: #B0413E;
+    color: #B0413E;
+}
+.profil{
+    width: 15em;
+    height: 15em;
 }
 /*----------------------------footer---------------------------------*/
 footer{
