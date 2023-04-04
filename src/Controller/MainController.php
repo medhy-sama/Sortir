@@ -31,8 +31,8 @@ class MainController extends AbstractController
     #[Route('/compte', name: '_afficher')]
     public function afficher(): Response
     {
-        $message = '';
-        return $this->render('main/compte.html.twig', compact('message')
+//        $message='';
+        return $this->render('main/compte.html.twig'/*, compact('message')*/
         );
     }
 
@@ -88,14 +88,16 @@ class MainController extends AbstractController
             if (($val1->getPassword()) == $val2) {
                 $entityManager->persist($id);
                 $entityManager->flush();
-                $message = "Bravo vous avez modifié vos informations !!!";
-                return $this->render('main/compte.html.twig', compact('message'));
+                $this->addFlash('success', 'Vous avez bien modifié(e) vos informations');
+
+                return $this->render('main/compte.html.twig');
             }
-            $message = "Votre mot de passe n'est pas bien renseigné !!!";
-            return $this->render('main/modifier.html.twig', compact('userForm', 'message'));
-        }
-        $message = '';
-        return $this->render('main/modifier.html.twig', compact('userForm', 'message'));
+            $this->addFlash('success', 'Votre mot de passe n\'est pas bien renseigné');
+
+            return $this->render('main/modifier.html.twig',compact('userForm'));
+            }
+//$message='';
+        return $this->render('main/modifier.html.twig',compact('userForm',/* 'message'*/));
     }
 
 }

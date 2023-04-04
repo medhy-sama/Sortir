@@ -4,6 +4,8 @@
 
 {% block body %}
 
+
+
     <div class="">
         <h1> Filtrer les sorties </h1>
             <div class="form_search" {{ stimulus_controller('serch-preview', { url: path('_list')}) }}>
@@ -64,12 +66,17 @@
                 {% endif %}
             {% endif%}
             {% if app.user == chaqueSortie.organisateur %}
+                {% if chaqueSortie.etat.id != 6 %}
                 <a href="{{ path('app_sortie_edit',{'id': chaqueSortie.id})}}">Modifier</a>
+                    {% endif %}
                 {% if chaqueSortie.etat.id == 1 %}
                     <a href="{{ path('_publier',{'sortie': chaqueSortie.id})}}"> - Publier</a>
             {% endif %}
+                {% if chaqueSortie.etat.id == 2 %}
+                    <a href="{{ path('_annuler',{'sortie': chaqueSortie.id})}}"> - Annuler</a>
+                {% endif %}
             {% endif %}
-            {% if chaqueSortie.estInscrit(app.user) == 1  %}
+            {% if chaqueSortie.estInscrit(app.user) == 1 and chaqueSortie.etat.id != 6  %}
                 <a href="{{ path('_desister',{'sortie': chaqueSortie.id}) }}"> - Se désister</a>
             {% endif %}
         </td>
