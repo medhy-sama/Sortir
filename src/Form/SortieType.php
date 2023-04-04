@@ -7,18 +7,22 @@ use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
-use App\Repository\CampusRepository;
-use App\Repository\LieuRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\LessThan;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\Type;
 
 class SortieType extends AbstractType
 {
@@ -33,21 +37,73 @@ class SortieType extends AbstractType
         $builder
             ->add('nom', null, [
                 'label' => 'Titre de la sortie   : ',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez renseigner le nom de la sortie',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez renseigner le nom de la sortie',
+                    ]),
+                ],
             ])
             ->add('datedebut', null,
                 [
                     'label' => 'Date de début   : ',
                     'html5' => true,
                     'widget' => 'single_text',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez renseigner la date de la sortie',
+                        ]),
+                        new NotNull([
+                            'message' => 'Veuillez renseigner la date de la sortie',
+                        ]),
+                        new GreaterThanOrEqual([
+                            'value'=>'today',
+                            'message'=> 'La date de début de l\'évènement n\'est pas valide',
+                        ])
+                    ]
                 ])
-            ->add('duree', null, [
+            ->add('duree', NumberType::class, [
                 'label' => 'Durée de la sortie   : ',
+                'attr' => ['placeholder' => 'en minutes'],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez renseigner la duree de la sortie',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez renseigner la duree de la sortie',
+                    ]),
+                    new Positive([
+                        'message' => 'La durée doit être supérieur à 0'
+                    ]),
+                    new Type([
+                        'type' => 'Integer',
+                        'message' => 'La durée de la sortie doit être un entier et renseignée en minutes',
+                    ])
+                ]
             ])
             ->add('datecloture', null,
                 [
                     'label' => 'Date de fin d\'inscriptions : ',
                     'html5' => true,
                     'widget' => 'single_text',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Veuillez renseigner la date de cloture des inscriptions à la sortie',
+                        ]),
+                        new NotNull([
+                            'message' => 'Veuillez renseigner la date de cloture des inscriptions à la sortie',
+                        ]),
+                        new GreaterThanOrEqual([
+                            'value'=>'today',
+                            'message'=> 'La date de début de l\'évènement n\'est pas valide',
+                        ]),
+                        new LessThan([
+                            'propertyPath' => 'parent.all [datedebut].data',
+                            'message' =>'La date de clôture doit être avant la date de début de l\'évènement'
+                        ])
+                    ]
                 ])
             ->add('nbinscriptionsmax', null, [
                 'label' => 'Nombre de participants max   : ',

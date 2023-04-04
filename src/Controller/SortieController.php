@@ -128,15 +128,15 @@ class SortieController extends AbstractController
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
-    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+    public function inscription(Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
         $datedujour=new \DateTime();
         $etat = $sortie->getEtat();
         if ($etat->getLibelle() == "Ouverte"){
             $user = $this->getUser();
-            $inscription = new inscription();
-            $inscription->setSortieId($sortieRepository->find($sortie->getId()));
-            $inscription->setUserId($userRepository->find($user->getId()));
+            $inscription = new Inscription();
+            $inscription->setSortieId($sortie);
+            $inscription->setUserId($user);
             $inscription->setDateInscription($datedujour);
             $entityManager->persist($inscription);
             $entityManager->flush();
@@ -153,17 +153,22 @@ class SortieController extends AbstractController
     }
 
     #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
-    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager, UserRepository $userRepository,SortieRepository $sortieRepository): Response
     {
         $datededbut=$sortie->getDatedebut();
         $datedujour = new \DateTime();
+
         if ($datededbut>$datedujour){
             $sortie->setEtat($etatRepository->find(2));
-
             $entityManager->persist($sortie);
             $entityManager->flush();
+
+
+
             $this->addFlash('success', 'Vous avez publiez la sortie');
-            return $this->redirectToRoute('_list');
+            return $this->redirectToRoute('_inscrire',[
+                'sortie'=>$sortie->getId()
+            ]);
         }
         else{
             $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>'.'Veuillez modifier la date du début de la sortie');
