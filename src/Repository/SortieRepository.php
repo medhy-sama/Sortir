@@ -44,8 +44,6 @@ class SortieRepository extends ServiceEntityRepository
 
     public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
     {
-
-
             $sorties= $this->createQueryBuilder('s')
                             ->leftjoin('s.inscriptions','i');
 //                            ->andWhere('s.etat != 7');
@@ -124,7 +122,6 @@ class SortieRepository extends ServiceEntityRepository
 //                    ->getQuery()->getResult();
 
             }
-
 
 
             if(!empty ($recherche->getSortiepassee())){

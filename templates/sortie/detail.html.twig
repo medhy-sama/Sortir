@@ -34,7 +34,9 @@
 
                 {% for chaqueInscription in inscriptions %}
                 <tr>
+
                 <td> {{ chaqueInscription.userId.username}}</td>
+
                     <td>{{ chaqueInscription.userId.prenom }} {{ chaqueInscription.userId.nom }}</td>
                 </tr>
                 {% endfor %}

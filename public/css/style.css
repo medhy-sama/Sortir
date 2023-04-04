@@ -63,6 +63,12 @@ main{
 html{
     font-family: "Dubai", "Tempus Sans ITC", "Times New Roman", sans-serif ;
 }
+.mess_success{
+    color: #1c7430;
+}
+.mess_error{
+    color: #B0413E;
+}
 /*----------------------------css stephane---------------------------------*/
 /*ul {*/
 /*    display: flex;*/
