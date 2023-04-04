@@ -45,8 +45,16 @@ class SortieRepository extends ServiceEntityRepository
 
     public function search(rechercheSortie $recherche, User $user, Etat $etatpasse): array
     {
-            $sorties= $this->createQueryBuilder('s')
-                            ->leftjoin('s.inscriptions','i');
+        $sorties= $this->createQueryBuilder('s');
+
+
+        if($recherche->getNoninscrit()){
+
+             $sorties
+                 ->leftJoin('s.inscriptions', 'i', 'WITH', 'i.user_id = :user')
+                 ->andWhere('i.id IS NULL')
+                 ->setParameter('user', $user->getId());
+        }
 
 
             if($recherche->getOrganisateur()){
@@ -59,16 +67,10 @@ class SortieRepository extends ServiceEntityRepository
 
             if($recherche->getInscrit()){
                 $sorties
-                    ->orWhere('i.user_id = :user')
+                    ->leftJoin('s.inscriptions', 'insc')
+                    ->orWhere('insc.user_id = :user')
                     ->setParameter('user',$user->getId());
-
-
             }
-
-            if ($recherche->getNoninscrit()){
-            $sorties
-                ->orWhere('i.user_id IS NULL');
-        }
 
 
             if(!empty ($recherche->getSortiepassee())){
@@ -110,8 +112,8 @@ class SortieRepository extends ServiceEntityRepository
 
             }
             $sorties
-                ->andWhere('s.etat != 7')
-                ->orderBy('s.datedebut','ASC');
+                ->orderBy('s.datedebut','ASC')
+                ->andWhere('s.etat != 7');
         return $sorties ->getQuery()->getResult();
     }
 }
