@@ -22,8 +22,8 @@ class SearchType extends AbstractType
                 'required'=>false,
                 'class'=>Campus::class,
                 'mapped' => true,
-                'placeholder' => 'Campus',
-                'label'=> false
+                'placeholder' => 'Tous les campus',
+                'label' => false
 
             ])
             ->add('q', TextType::class,[

@@ -43,8 +43,9 @@ class SortieController extends AbstractController
         $form->handleRequest($request);
 
             return $this->render('sortie/liste.html.twig', [
-                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse),
-                'form' => $form
+                'form' => $form,
+                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse)
+
             ]);
     }
 

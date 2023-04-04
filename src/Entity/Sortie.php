@@ -251,4 +251,10 @@ class Sortie
         })->count();
     }
 
+    public function __toString(): string
+    {
+        return $this->nom;
+    }
+
+
 }
