@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\InscriptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\SortieRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -19,31 +19,32 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\NotBlank (message: 'Le nom n\'est pas valide')]
+    #[Assert\NotNull(message: 'Le nom n\'est pas valide')]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual('today')]
+    #[Assert\GreaterThanOrEqual('today',message: 'La date de début de l\'évènement n\'est pas valide')]
     private ?\DateTimeInterface $datedebut = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\NotBlank (message: 'La durée n\'est pas valide')]
+    #[Assert\NotNull(message: 'La durée n\'est pas valide')]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual('today')]
+    #[Assert\GreaterThanOrEqual('today', message: 'La date de clôture doit être supérieure à aujourd\'hui')]
+    #[Assert\LessThan(propertyPath: 'datedebut',message: 'La date de clôture doit être avant la date de début de l\'évènement')]
     private ?\DateTimeInterface $datecloture = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'Le nombre de participants n\'est pas valide')]
+    #[Assert\NotNull(message: 'Le nombre de participants n\'est pas valide')]
     private ?int $nbinscriptionsmax = null;
 
     #[ORM\Column(length: 500)]
-    #[Assert\NotBlank]
-    #[Assert\NotNull]
+    #[Assert\NotBlank(message: 'La description n\'est pas valide')]
+    #[Assert\NotNull(message: 'La description n\'est pas valide')]
     private ?string $descriptioninfos = null;
 
     #[ORM\ManyToOne(inversedBy: 'sorties')]
@@ -249,6 +250,5 @@ class Sortie
 
         })->count();
     }
-
 
 }
