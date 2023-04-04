@@ -8,6 +8,7 @@ use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
 
+use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,6 +23,7 @@ use Symfony\Component\Validator\Constraints\LessThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
 class SortieType extends AbstractType
@@ -64,9 +66,13 @@ class SortieType extends AbstractType
                         ])
                     ]
                 ])
-            ->add('duree', NumberType::class, [
+            ->add('duree', null, [
                 'label' => 'Durée de la sortie   : ',
-                'attr' => ['placeholder' => 'en minutes'],
+                'attr' => [
+                    'placeholder' => 'en minutes',
+                    'min' => 1,
+                    'max' => 2880
+                    ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez renseigner la duree de la sortie',
@@ -78,7 +84,7 @@ class SortieType extends AbstractType
                         'message' => 'La durée doit être supérieur à 0'
                     ]),
                     new Type([
-                        'type' => 'Integer',
+                        'type' => 'integer',
                         'message' => 'La durée de la sortie doit être un entier et renseignée en minutes',
                     ])
                 ]
@@ -107,9 +113,36 @@ class SortieType extends AbstractType
                 ])
             ->add('nbinscriptionsmax', null, [
                 'label' => 'Nombre de participants max   : ',
+                'attr' => [
+                    'min' => 1,
+                    'max' => 150
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez renseigner le nombre de participants maximum',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez renseigner le nombre de participants maximum',
+                    ]),
+                    new Positive([
+                        'message' => 'La durée doit être supérieur à 0'
+                    ]),
+                ]
             ])
             ->add('descriptioninfos', null, [
                 'label' => 'Description  : ',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez décrire la sortie',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez décrire la sortie',
+                    ]),
+                    new Regex([
+                        'pattern' => '^[a-zA-Z0-9]+$',
+
+                    ])
+                ]
             ])
             ->add('campus', EntityType::class,
                 ['class' => Campus::class,
