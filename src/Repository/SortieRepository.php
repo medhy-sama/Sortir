@@ -43,7 +43,7 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
+    public function search(rechercheSortie $recherche, User $user, Etat $etatpasse): array
     {
         $sorties= $this->createQueryBuilder('s');
 
