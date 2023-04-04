@@ -9,12 +9,14 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 class MainController extends AbstractController
@@ -35,18 +37,55 @@ class MainController extends AbstractController
     }
 
     #[IsGranted("ROLE_USER")]
-    #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
-    public function modifier(User $user, EntityManagerInterface $entityManager,Request $request, User $id, UserRepository $userRepository): Response
+    #[Route('/compte/{id}',
+        name: '_profil_inscrit',
+        requirements: ['id' => '\d+']
+    )]
+    public function afficher_profil(
+        User $user,
+    ): Response
     {
-        $userForm =$this->createForm(UserType::class, $user);
+        $message = '';
+
+        return $this->render('main/profil_inscrit.html.twig', compact('message', 'user')
+        );
+    }
+
+    #[IsGranted("ROLE_USER")]
+    #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
+    public function modifier(
+        User $user,
+        EntityManagerInterface $entityManager,
+        Request $request,
+        User $id,
+        UserRepository $userRepository,
+        SluggerInterface $slugger
+    ): Response
+    {
+        $userForm = $this->createForm(UserType::class, $user);
         $userForm->handleRequest($request);
 
         $val1 = $userRepository->find($id);
-        if ($userForm->isSubmitted() and $userForm->isValid()){
-            $val2=password_verify($userForm->get('password')->getData(),$val1->getPassword()) ;
-            if (($val1->getPassword()) == $val2){
-                dump($val2);
-                dump($val1);
+        if ($userForm->isSubmitted() and $userForm->isValid()) {
+            $photo = $userForm->get('photo')->getData();
+            if ($photo) {
+                $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+                try {
+                    $photo->move(
+                        $this->getParameter('user_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                $id->setPhoto($newFilename);
+            }
+
+            $val2 = password_verify($userForm->get('password')->getData(), $val1->getPassword());
+            if (($val1->getPassword()) == $val2) {
                 $entityManager->persist($id);
                 $entityManager->flush();
                 $this->addFlash('success', 'Vous avez bien modifié(e) vos informations');

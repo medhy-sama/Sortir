@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Etat;
+use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\User;
@@ -42,7 +43,7 @@ class SortieRepository extends ServiceEntityRepository
         }
     }
 
-    public function search(rechercheSortie $recherche, User $user, Etat $etatpasse) :array
+    public function search(rechercheSortie $recherche, User $user, Etat $etatpasse): array
     {
             $sorties= $this->createQueryBuilder('s')
                             ->leftjoin('s.inscriptions','i');
