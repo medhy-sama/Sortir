@@ -1,0 +1,6 @@
+﻿campus_id,username,password,nom,prenom,telephone,mail,administrateur,actif,is_verified,photo
+2,Ironman,123456,Starck,Tony,01 10 20 30 40,ironman@sortir.com,0,1,0,
+3,Spiderman,123456,Kal,El,01 10 20 30 41,spiderman@sortir.com,0,1,0,
+4,Hulk,123456,Banner,Bruce,01 10 20 30 42,hulk@sortir.com,0,1,0,
+3,Supergirl,123456,Zor'el,Kara,01 10 20 30 43,supergirl@sortir.com,0,1,0,
+4,Antman,123456,Lang,Scott,01 10 20 30 44,antman@sortir.com,0,1,0,

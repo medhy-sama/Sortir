@@ -33,7 +33,7 @@
                 {{ form_end(form) }}
             </div>
 
-        <h2>Liste des sorties</h2>
+
         {% if sorties is empty %}
             <p class="none_result">Aucun resultat</p>
         {% endif %}
@@ -96,6 +96,7 @@
                                     {% endif %}
                                 </td>
                             </tr>
+
                         {% endif %}
 
                     {% endfor %}
@@ -106,21 +107,6 @@
 
 
 
-{#    <h1>Liste des sorties</h1>#}
 
-{#    <ul>#}
-{#        {% for chaqueSortie in sorties %}#}
-{#            <li id="sorties">#}
-{#                <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }}#}
-{#                    <span id="infoSortie">#}
-{#                      {{ chaqueSortie.lieu.nomLieu }}#}
-{#                        {{ chaqueSortie.datedebut | date('d/m/y H:i')}}#}
-{#                        {{ chaqueSortie.lieu.ville.nomVille}}#}
-{#                    </span>#}
-{#                </a>#}
-{#            </li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-
-    <a href="{{ path('_creer') }}">Organiser une nouvelle sortie</a>
+    <a href="{{ path('_creer') }}"><button>Organiser une nouvelle sortie</button></a>
 {% endblock %}

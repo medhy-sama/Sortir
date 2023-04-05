@@ -28,7 +28,9 @@ class UserType extends AbstractType
     {
 
         $builder
-            ->add('username')
+            ->add('username', TextType::class, [
+                'label' => 'Username : '
+            ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 // instead of being set onto the object directly,
@@ -49,15 +51,15 @@ class UserType extends AbstractType
                 'invalid_message' => 'Attention les valeurs des champs de mot de passe ne correspondent pas.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmer mot de passe'],
+                'first_options'  => ['label' => 'Mot de passe : '],
+                'second_options' => ['label' => 'Confirmer mot de passe : '],
 
             ])
             ->add('nom', TextType::class, [
-                'label' => 'Nom  : '
+                'label' => 'Nom : '
                 ])
             ->add('prenom', TextType::class, [
-                'label' => 'Prénom  : '
+                'label' => 'Prénom : '
             ])
             ->add('telephone', TextType::class, [
                 'label' => 'Téléphone  : ',
@@ -76,10 +78,10 @@ class UserType extends AbstractType
     ]
             ])
             ->add('mail', TextType::class, [
-                'label' => 'Nom  : '
+                'label' => 'Email : '
             ])
             ->add('photo', FileType::class, [
-                'label' => 'Photo de Profil     : ',
+                'label' => 'Photo de Profil : ',
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [

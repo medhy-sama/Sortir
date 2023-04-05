@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Sortir!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         <link rel="stylesheet" href="{{asset('css/style.css') }}">
         {% block stylesheets %}
@@ -13,6 +12,7 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <link rel="icon" type="image/x-icon" href="../public/images/logo_sortir.png">
     </head>
     <body>
     <header>
@@ -21,6 +21,9 @@
         <img class="img_logo" src="{{ asset('images/logo_sortir.png') }}" alt="logo sortir.com">
         <h1 class="logo">Sortir.com</h1>
         </div>
+            <div id="bannière">
+
+            </div>
         </div>
         <div id="header_footer">
         <nav>

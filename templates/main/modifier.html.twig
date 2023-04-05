@@ -2,11 +2,22 @@
 
 {% block body %}
 
-    {{ form_start(userForm) }}
-    {{ form_widget(userForm) }}
-{#    <div>{{ message }}</div>#}
-    <button>Enregistrer</button>
-    {{ form_end(userForm) }}
+        <div id="form_connexion">
+            {{ form_start(userForm) }}
+            <div class="form_connexion">
+                {{ form_row(userForm.username) }}
+                {{ form_row(userForm.nom) }}
+                {{ form_row(userForm.prenom) }}
+                {{ form_row(userForm.telephone) }}
+                {{ form_row(userForm.mail) }}
+                {{ form_row(userForm.photo) }}
+                {{ form_row(userForm.password) }}
+
+            <button>Enregistrer</button>
+            </div>
+            {{ form_end(userForm) }}
+        </div>
+
 {% endblock %}
 
 {% block title %}
