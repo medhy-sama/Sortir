@@ -187,7 +187,7 @@ article{
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0.5em;
+    padding: 0.2em;
 }
 .row_profil .row_label{
     padding: 0.2em;
@@ -199,30 +199,6 @@ article{
     text-align: center;
     width: 40%;
 }
-
-
-
-/*----------------------------css stephane---------------------------------*/
-/*ul {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*}*/
-
-/*li {*/
-/*    padding: 0 2em;*/
-/*    list-style-type: none;*/
-/*    font-family: "MS UI Gothic", sans-serif;*/
-/*    font-size: 1.2em;*/
-/*    font-weight: bold;*/
-/*    color: whitesmoke;*/
-/*}*/
-
-/*a {*/
-/*    text-decoration: none;*/
-/*    text-decoration-color: black;*/
-/*    font-size: 18px;*/
-/*    font-family: "JetBrains Mono Light", sans-serif;*/
-/*}*/
 
 /*----------------------------header---------------------------------*/
 
@@ -270,8 +246,8 @@ border-bottom: 1px solid #ae8f8f;
 }
 .img_user{
     border-radius: 50%;
-    width: 2em;
-    height: 2em;
+    width: 3em;
+    height: 3em;
 }
 #header_footer a{
     text-decoration: none;
@@ -320,7 +296,7 @@ nav a {
 
 /*----------------------------main---------------------------------*/
 main{
-    padding: 2em 7em 7em 7em;
+    padding: 2em 7em 2em 7em;
 }
 h1{
     font-size: 2em;
@@ -415,7 +391,7 @@ table{
 /*----------------------------footer---------------------------------*/
 footer{
     display: flex;
-    padding: 7em;
+    padding: 0 7em 1em 0;
     justify-content: center;
 }
 
