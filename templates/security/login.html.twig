@@ -4,9 +4,7 @@
 
 {% block body %}
     <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">Erreur de connexion <p>Veuillez saisir à nouveau vos informations.</p></div>
-        {% endif %}
+
 
         {#    {% if app.user %}
         <div class="mb-3">
@@ -14,6 +12,9 @@
         </div>
     {% endif %} #}
         <div id="form_connexion">
+            {% if error %}
+                <div class="alert alert-danger"><p>Erreur de connexion</p> <p>Veuillez saisir à nouveau vos informations.</p></div>
+            {% endif %}
             <div class="form_connexion">
                 <h1 class="h3 mb-3 font-weight-normal">Espace de connexion</h1>
                 <div>
