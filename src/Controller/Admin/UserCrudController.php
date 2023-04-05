@@ -16,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -50,6 +51,7 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
+            ImageField::new('photo', 'Image Field')->setUploadDir('/public/uploads/users/'),
             AssociationField::new('campus'),
             TextField::new('username'),
             TextField::new('password')
@@ -69,6 +71,7 @@ class UserCrudController extends AbstractCrudController
             BooleanField::new('administrateur'),
             BooleanField::new('actif'),
             BooleanField::new('isVerified'),
+//            BooleanField::new('annule')
         ];
     }
     public function createNewFormBuilder(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormBuilderInterface
