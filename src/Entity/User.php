@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?bool $administrateur = null;
 
     #[ORM\Column]
-    private ?bool $actif = null;
+    private ?bool $actif = false;
 
     #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class)]
     private Collection $sortiesOrganisees;

@@ -3,7 +3,6 @@
 {% block body %}
     {% if app.user %}
         <div id="conteneur">
-
             <article>
                 <div class="row_profil">
                     <p class="row_label">Votre photo de profil : </p>
@@ -11,6 +10,9 @@
                          alt="User-Photo_profil">
 
                 </div>
+            </article>
+            <article>
+
                 <div class="row_profil">
                     <p class="row_label">Votre pseudo : </p>
 
@@ -33,9 +35,10 @@
                     <p><strong>{{ app.user.mail }}</strong></p>
                 </div>
                 <a href="{{ path('_modifier', {'id': app.user.id}) }}">
-                        <button>Modifier</button>
+                        {% if app.user.actif and app.user.roles == ['ROLE_USER'] %}<button>Modifier</button>{% endif %}
                     </a>
             </article>
+
 
 
         </div>

@@ -57,6 +57,10 @@ table {
 
 
 /*----------------------------defaut---------------------------------*/
+.alert {
+    margin-top: 1em;
+    color: #B0413E;
+}
 li{
     color: #B0413E;
 }
@@ -72,9 +76,13 @@ html{
     font-family: "Dubai", "Tempus Sans ITC", "Times New Roman", sans-serif ;
 }
 .mess_success{
+    margin-top: 0.5em;
+    text-align: center;
     color: #1c7430;
 }
 .mess_error{
+    margin-top: 0.5em;
+    text-align: center;
     color: #B0413E;
 }
 
@@ -128,10 +136,10 @@ select:focus{
     color: #FFFFFF;
 }
 
-.table{
+.div_tab{
     height: 20em;
     overflow-y: scroll;
-
+    margin: 1em 0;
 }
 ::-webkit-scrollbar {
     width: 1em;
@@ -141,6 +149,7 @@ select:focus{
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px #640000;
     border-radius: 10px;
+    background: #2E282A;
 }
 ::-webkit-scrollbar-thumb{
     background: #CD5334 ;
@@ -187,7 +196,7 @@ article{
     width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0.5em;
+    padding: 0.2em;
 }
 .row_profil .row_label{
     padding: 0.2em;
@@ -200,40 +209,15 @@ article{
     width: 40%;
 }
 
-
-
-/*----------------------------css stephane---------------------------------*/
-/*ul {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*}*/
-
-/*li {*/
-/*    padding: 0 2em;*/
-/*    list-style-type: none;*/
-/*    font-family: "MS UI Gothic", sans-serif;*/
-/*    font-size: 1.2em;*/
-/*    font-weight: bold;*/
-/*    color: whitesmoke;*/
-/*}*/
-
-/*a {*/
-/*    text-decoration: none;*/
-/*    text-decoration-color: black;*/
-/*    font-size: 18px;*/
-/*    font-family: "JetBrains Mono Light", sans-serif;*/
-/*}*/
-
 /*----------------------------header---------------------------------*/
 
 header{
 border-bottom: 1px solid #ae8f8f;
-    padding: 0 7em 2em 7em;
+    padding: 0 7em 0 7em;
 
 }
 #header_top{
     width: 100%;
-    margin-bottom: 2em;
     display: flex;
     max-height: 19vh;
     background: url("../images/skylineNantes.png");
@@ -247,6 +231,7 @@ border-bottom: 1px solid #ae8f8f;
 
 }
 #header_footer{
+    height: 50px;
     display: flex;
     justify-content: center;
 }
@@ -270,8 +255,8 @@ border-bottom: 1px solid #ae8f8f;
 }
 .img_user{
     border-radius: 50%;
-    width: 2em;
-    height: 2em;
+    width: 3em;
+    height: 3em;
 }
 #header_footer a{
     text-decoration: none;
@@ -320,7 +305,7 @@ nav a {
 
 /*----------------------------main---------------------------------*/
 main{
-    padding: 2em 7em 7em 7em;
+    padding: 0 7em 2em 7em;
 }
 h1{
     font-size: 2em;
@@ -362,13 +347,26 @@ display: flex;
     width: 100%;
     height: 100%;
 }
-
+tr th {
+    position: sticky;
+    top: 0;
+}
+th:first-child{
+    width: 30%;
+}
+th:last-child{
+    width: 15%;
+}
+tbody{
+    width: 95%;
+}
 th{
     font-size: 1.1em;
     font-family: "Yu Gothic UI Light", "Tempus Sans ITC", "Times New Roman", sans-serif;
     padding: 0.5em 0;
     background: #2E282A;
     color: #FFFFFF;
+    width: 5%;
 }
 
 td{
@@ -389,8 +387,6 @@ tr{
 table{
     display: flex;
     justify-content: center;
-    border: 0.2em solid #efefef;
-    padding: 1em;
     margin-bottom: 0.5em;
 }
 #conteneur{
@@ -414,8 +410,11 @@ table{
 
 /*----------------------------footer---------------------------------*/
 footer{
-    display: flex;
-    padding: 7em;
-    justify-content: center;
+    padding: 0 7em 1em 0;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+left: 0;
+    right: 0;
 }
 
