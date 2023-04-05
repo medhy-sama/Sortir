@@ -3,6 +3,8 @@
 {% block title %}Organisez une sortie {% endblock %}
 
 {% block body %}
+<div id="conteneur">
+    <div id="form_connexion">
     <h1>Organiser une sortie</h1>
 
     {{ include('sortie/_form.html.twig') }}
@@ -11,7 +13,8 @@
             <a href="{{ path('_list') }}">Retourner à la liste des sorties</a>
         </li>
     </ul>
-
+    </div>
+</div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
 
