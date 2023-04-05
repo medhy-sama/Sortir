@@ -7,6 +7,7 @@ use App\Entity\Inscription;
 use App\Entity\rechercheSortie;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Form\AnnulerSortieType;
 use App\Form\SearchType;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
@@ -128,15 +129,18 @@ class SortieController extends AbstractController
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
-    public function inscription(Sortie $sortie, SortieRepository $sortieRepository, UserRepository $userRepository, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+    public function inscription(Sortie $sortie, EntityManagerInterface $entityManager): Response
     {
         $datedujour=new \DateTime();
         $etat = $sortie->getEtat();
-        if ($etat->getLibelle() == "Ouverte"){
+        $nbInscriptionMax = $sortie->getNbinscriptionsmax();
+        $nbInscrit = count($sortie->getInscriptions());
+        $complet = $nbInscriptionMax - $nbInscrit;
+        if ($etat->getLibelle() == "Ouverte" and $complet  > 0){
             $user = $this->getUser();
-            $inscription = new inscription();
-            $inscription->setSortieId($sortieRepository->find($sortie->getId()));
-            $inscription->setUserId($userRepository->find($user->getId()));
+            $inscription = new Inscription();
+            $inscription->setSortieId($sortie);
+            $inscription->setUserId($user);
             $inscription->setDateInscription($datedujour);
             $entityManager->persist($inscription);
             $entityManager->flush();
@@ -145,7 +149,7 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('_list');
         }
        else{
-            $this->addFlash('error', 'Vous n\'avez pas été inscrit(e), les inscriptions sont cloturées');
+            $this->addFlash('error', 'Vous n\'avez pas été inscrit(e), les inscriptions sont cloturées ou complètes');
             return $this->redirectToRoute('_list');
         }
 
@@ -153,17 +157,22 @@ class SortieController extends AbstractController
     }
 
     #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
-    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager): Response
+    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager, UserRepository $userRepository,SortieRepository $sortieRepository): Response
     {
         $datededbut=$sortie->getDatedebut();
         $datedujour = new \DateTime();
+
         if ($datededbut>$datedujour){
             $sortie->setEtat($etatRepository->find(2));
-
             $entityManager->persist($sortie);
             $entityManager->flush();
+
+
+
             $this->addFlash('success', 'Vous avez publiez la sortie');
-            return $this->redirectToRoute('_list');
+            return $this->redirectToRoute('_inscrire',[
+                'sortie'=>$sortie->getId()
+            ]);
         }
         else{
             $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>'.'Veuillez modifier la date du début de la sortie');
@@ -195,26 +204,32 @@ class SortieController extends AbstractController
     }
 
 
-    #[Route('/annuler/{sortie}', name: '_annuler', methods: ['GET'])]
-    public function annulation(Sortie $sortie, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+    #[Route('/annuler/{sortie}', name: '_motif_annuler')]
+    public function motif_annulation(Sortie $sortie, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, Request $request, EtatRepository $etatRepository): Response
     {
-        $datededbut=$sortie->getDatedebut();
-        $datedujour = new \DateTime();
-        $etat = $sortie->getEtat()->getId();
-        if ($datededbut>$datedujour){
-            if ($etat == 2 or $etat == 3)
-            $sortie->setEtat($etatRepository->find(6));
+        $form = $this->createForm(AnnulerSortieType::class, $sortie);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sortie->setMotif($request->request->get('motif'));
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $this->addFlash('success', 'Vous avez annuler la sortie');
-            return $this->redirectToRoute('_list');
+            $datededbut=$sortie->getDatedebut();
+            $datedujour = new \DateTime();
+            $etat = $sortie->getEtat()->getId();
+            if ($datededbut>$datedujour){
+                if ($etat == 2 or $etat == 3){
+                    $sortie->setEtat($etatRepository->find(6));
+                    $entityManager->persist($sortie);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Vous avez annuler la sortie');
+                    return $this->redirectToRoute('_list');
         }
-        else{
-            $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>'.'Veuillez modifier la date du début de la sortie');
-            return $this->redirectToRoute('_list');
-        }
-
     }
+        }
+        return $this->render('sortie/annuler.html.twig', compact('form'));
+    }
+
+
 
     #[Route('/lieu-city/{ville}', name: '_lieu', methods: ['GET'])]
     public function listLieuDeVille(

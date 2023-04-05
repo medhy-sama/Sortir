@@ -19,22 +19,22 @@ class Sortie
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    #[Assert\NotBlank (message: 'Le nom n\'est pas valide')]
-    #[Assert\NotNull(message: 'Le nom n\'est pas valide')]
+//    #[Assert\NotBlank (message: 'Le nom n\'est pas valide')]
+//    #[Assert\NotNull(message: 'Le nom n\'est pas valide')]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual('today',message: 'La date de début de l\'évènement n\'est pas valide')]
+//    #[Assert\GreaterThanOrEqual('today',message: 'La date de début de l\'évènement n\'est pas valide')]
     private ?\DateTimeInterface $datedebut = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank (message: 'La durée n\'est pas valide')]
-    #[Assert\NotNull(message: 'La durée n\'est pas valide')]
+//    #[Assert\NotBlank (message: 'La durée n\'est pas valide')]
+//    #[Assert\NotNull(message: 'La durée n\'est pas valide')]
     private ?int $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThanOrEqual('today', message: 'La date de clôture doit être supérieure à aujourd\'hui')]
-    #[Assert\LessThan(propertyPath: 'datedebut',message: 'La date de clôture doit être avant la date de début de l\'évènement')]
+//    #[Assert\GreaterThanOrEqual('today', message: 'La date de clôture doit être supérieure à aujourd\'hui')]
+//    #[Assert\LessThan(propertyPath: 'datedebut',message: 'La date de clôture doit être avant la date de début de l\'évènement')]
     private ?\DateTimeInterface $datecloture = null;
 
     #[ORM\Column]
@@ -67,6 +67,12 @@ class Sortie
     private ?Etat $etat = null;
 
     private ?Ville $ville =null;
+
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $motif = null;
+
+
+
 
 
     public function __construct()
@@ -250,6 +256,21 @@ class Sortie
 
         })->count();
     }
+
+    public function getMotif(): ?string
+    {
+        return $this->motif;
+    }
+
+    public function setMotif(?string $motif): self
+    {
+        $this->motif = $motif;
+
+        return $this;
+    }
+
+
+
 
     public function __toString(): string
     {

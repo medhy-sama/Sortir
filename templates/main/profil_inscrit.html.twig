@@ -5,18 +5,32 @@
         <div id="conteneur">
 
             <article>
-                <p>Votre photo de profil : </p>
-                <img src="{{ asset('uploads/users/' ~app.user.photo ) }}" alt="User-Photo_profil">
-                <p>Votre pseudo : </p>
-                <p><strong>{{ user.username }}</strong></p>
-                <p>Votre nom : </p>
-                <p><strong>{{ user.nom }}</strong></p>
-                <p>Votre prenom : </p>
-                <p><strong>{{ user.prenom }}</strong></p>
-                <p>Votre numéro de téléphone : </p>
-                <p><strong>{{ user.telephone }}</strong></p>
-                <p>Votre email : </p>
-                <p><strong>{{ user.mail }}</strong></p>
+                <div class="row_profil">
+                    <p class="row_label">Votre photo de profil : </p>
+                    <img class="img_user profil row_label" src="{{ user.photo ? asset('uploads/users/' ~ user.photo) : asset('images/user.png') }}"
+                         alt="User-Photo_profil">
+                </div>
+                <div class="row_profil">
+                    <p class="row_label">Votre pseudo : </p>
+
+                    <p><strong>{{ user.username }}</strong></p>
+                </div>
+                <div class="row_profil">
+                    <p class="row_label">Votre nom : </p>
+                    <p><strong>{{ user.nom }}</strong></p>
+                </div>
+                <div class="row_profil">
+                    <p class="row_label">Votre prenom : </p>
+                    <p><strong>{{ user.prenom }}</strong></p>
+                </div>
+                <div class="row_profil">
+                    <p class="row_label">Votre numéro de téléphone : </p>
+                    <p><strong>{{ user.telephone }}</strong></p>
+                </div>
+                <div class="row_profil">
+                    <p class="row_label">Votre email : </p>
+                    <p><strong>{{user.mail }}</strong></p>
+                </div>
             </article>
 
 
