@@ -42,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 15, nullable: true)]
+    #[ORM\Column(nullable: true)]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 20)]
@@ -72,8 +72,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
-//    public UserPasswordHasherInterface $hasher;
-//    public PasswordAuthenticatedUserInterface $user;
 
     public function __construct()
     {

@@ -1,34 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sortie index{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('searchSortie') }}
+{% endblock %}
 
 {% block body %}
 
 
 
-    <div class="">
-        <h2> Filtrer les sorties </h2>
-        <div class="form_search" {{ stimulus_controller('serch-preview', { url: path('_list')}) }}>
-            {{ form_start(form) }}
-            <div class="form_block">
-                {{ form_row(form.campus) }}
-                <div class="form-control" data-action="search-preview#onSearchInput">{{ form_row(form.q) }} </div>
-                <div class="form_date">
-                    {{ form_row(form.datemin) }}
-                    {{ form_row(form.datemax) }}
-                </div>
+{#    <div class="">#}
+        <h1> Filtrer les sorties </h1>
+            <div class="form_search"  data-controller ="searchSortie">
+                {{ form_start(form) }}
+                    <div class="form_block">
+                        {{ form_row(form.campus, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                        {{ form_row(form.q, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                            <div class="form_date">
+                                {{ form_row(form.datemin, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                                {{ form_row(form.datemax, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                            </div>
+                    </div>
+                    <div class="form_block">
+                        {{ form_row(form.organisateur, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                        {{ form_row(form.inscrit, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                        {{ form_row(form.nonInscrit, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                        {{ form_row(form.sortiePassee, {'attr' : {'data-searchSortie-target' : 'filter'}})}}
+                    </div>
+                    <div class="form_block">
+                        <button type="submit" data-searchSortie-target="submit"> Filtrer </button>
+                    </div>
+                {{ form_end(form) }}
             </div>
-            <div class="form_block">
-                {{ form_row(form.organisateur) }}
-                {{ form_row(form.inscrit) }}
-                {{ form_row(form.nonInscrit) }}
-                {{ form_row(form.sortiePassee) }}
-            </div>
-            <div class="form_block">
-                <button>Filtrer</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
 
 
         {% if sorties is empty %}
@@ -46,7 +49,7 @@
                     <th>Organisateur</th>
                     <th>Actions</th>
                 </tr>
-                <div class="list-group-item" data-search-preview-target="result">
+                <div class="list-group-item" data-searchSortie-target="results">
                     {% for chaqueSortie in sorties %}
 
                         {% if sorties is not null %}
@@ -104,21 +107,6 @@
 
 
 
-    {#    <h1>Liste des sorties</h1> #}
-
-    {#    <ul> #}
-    {#        {% for chaqueSortie in sorties %} #}
-    {#            <li id="sorties"> #}
-    {#                <a id="" href="{{ path('_detail',{'sortie':chaqueSortie.id}) }}">{{ chaqueSortie.nom }} #}
-    {#                    <span id="infoSortie"> #}
-    {#                      {{ chaqueSortie.lieu.nomLieu }} #}
-    {#                        {{ chaqueSortie.datedebut | date('d/m/y H:i')}} #}
-    {#                        {{ chaqueSortie.lieu.ville.nomVille}} #}
-    {#                    </span> #}
-    {#                </a> #}
-    {#            </li> #}
-    {#        {% endfor %} #}
-    {#    </ul> #}
 
     <a href="{{ path('_creer') }}"><button>Organiser une nouvelle sortie</button></a>
 {% endblock %}
