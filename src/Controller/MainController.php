@@ -31,9 +31,7 @@ class MainController extends AbstractController
     #[Route('/compte', name: '_afficher')]
     public function afficher(): Response
     {
-//        $message='';
-        return $this->render('main/compte.html.twig'/*, compact('message')*/
-        );
+        return $this->render('main/compte.html.twig');
     }
 
     #[IsGranted("ROLE_USER")]
@@ -96,8 +94,8 @@ class MainController extends AbstractController
 
             return $this->render('main/modifier.html.twig',compact('userForm'));
             }
-//$message='';
-        return $this->render('main/modifier.html.twig',compact('userForm',/* 'message'*/));
+
+        return $this->render('main/modifier.html.twig',compact('userForm'));
     }
 
 }

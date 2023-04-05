@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 {
@@ -58,8 +59,21 @@ class UserType extends AbstractType
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom  : '
             ])
-            ->add('telephone', IntegerType::class, [
-                'label' => 'Téléphone  : '
+            ->add('telephone', TextType::class, [
+                'label' => 'Téléphone  : ',
+                'constraints' => [
+                    new Length([
+                        'min' => 10,
+                        'max' => 10,
+                        'minMessage' => 'Le numéro de téléphone n\'est pas valide',
+                        'maxMessage' => 'Le numéro de téléphone n\'est pas valide'
+                    ]),
+                    new Regex([
+                        'pattern' => '^0[1-9][0-9]{8}$^',
+                        'message' => 'Le numéro de téléphone n\'est pas au bon format'
+                    ])
+
+    ]
             ])
             ->add('mail', TextType::class, [
                 'label' => 'Nom  : '
@@ -76,7 +90,7 @@ class UserType extends AbstractType
                                 'image/jpg',
                                 'image/gif',
                             ],
-                            'mimeTypesMessage' => 'Please upload a valid IMG document',
+                            'mimeTypesMessage' => 'L\image n\'est pas valide',
                         ])
                     ],
                             ]);

@@ -3,13 +3,13 @@ import { Controller } from "@hotwired/stimulus";
 
     export default class extends Controller{
 
-        static targets = [ "filter" ];
+        static targets = [ "filter" ]
 
 
 
         connect(){
             console.log("Le controller est bien chargé !");
-            this.filterTargets.forEach( filter => {
+            this.element.forEach( filter => {
                 filter.addEventListener ("change", () => {
                     this.submit();
                 })

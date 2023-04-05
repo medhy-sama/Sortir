@@ -6,23 +6,31 @@ use App\Entity\Sortie;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class AnnulerSortieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-//            ->add('nom')
-//            ->add('datedebut')
-//            ->add('duree')
-//            ->add('datecloture')
-//            ->add('nbinscriptionsmax')
-//            ->add('descriptioninfos')
-//            ->add('organisateur')
-//            ->add('campus')
-//            ->add('lieu')
-//            ->add('etat')
-            ->add('motif')
+            ->add('motif', null, [
+
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez inscrire le motif d\'annulation',
+                    ]),
+                    new NotNull([
+                        'message' => 'Veuillez inscrire le motif d\'annulation',
+                    ]),
+                    new Regex([
+                        'pattern' => '^[a-zA-Z0-9]+$',
+                        'message' => 'Le motif d\'annulation n\'est pas valide',
+
+                    ])
+                ]
+            ])
         ;
     }
 
