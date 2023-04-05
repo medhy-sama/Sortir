@@ -55,7 +55,6 @@ class SortieController extends AbstractController
                                 EntityManagerInterface $em,
                                 EtatRepository $etatRepository,
                                 CampusRepository $campusRepository,
-//                                UserInterface $user,
                                 ): Response
 
     {
@@ -166,8 +165,6 @@ class SortieController extends AbstractController
             $sortie->setEtat($etatRepository->find(2));
             $entityManager->persist($sortie);
             $entityManager->flush();
-
-
 
             $this->addFlash('success', 'Vous avez publiez la sortie');
             return $this->redirectToRoute('_inscrire',[

@@ -259,8 +259,6 @@ class Sortie
     }
 
 
-
-
     public function __toString(): string
     {
         return $this->nom;

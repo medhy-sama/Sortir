@@ -151,11 +151,4 @@ class rechercheSortie
     {
         $this->sortiepassee = $sortiepassee;
     }
-
-//public function __toString(): string
-//{
-//    return $this -> q;
-//}
-
-
 }

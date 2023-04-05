@@ -25,19 +25,6 @@ class Inscription
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_inscription = null;
 
-//    /**
-//     * @param int|null $id
-//     * @param Sortie|null $sortie_id
-//     * @param User|null $user_id
-//     * @param \DateTimeInterface|null $date_inscription
-//     */
-//    public function __construct(?int $id, ?Sortie $sortie_id, ?User $user_id, ?\DateTimeInterface $date_inscription)
-//    {
-//        $this->id = $id;
-//        $this->sortie_id = $sortie_id;
-//        $this->user_id = $user_id;
-//        $this->date_inscription = $date_inscription;
-//    }
 
     public function getId(): ?int
     {
