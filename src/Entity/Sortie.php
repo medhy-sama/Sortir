@@ -57,6 +57,12 @@ class Sortie
 
     private ?Ville $ville =null;
 
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $motif = null;
+
+
+
+
 
     public function __construct()
     {
@@ -239,6 +245,21 @@ class Sortie
 
         })->count();
     }
+
+    public function getMotif(): ?string
+    {
+        return $this->motif;
+    }
+
+    public function setMotif(?string $motif): self
+    {
+        $this->motif = $motif;
+
+        return $this;
+    }
+
+
+
 
     public function __toString(): string
     {

@@ -25,7 +25,10 @@
     </section>
 
         <h1>Participants</h1>
-
+    {% if inscriptions is empty %}
+        <p class="none_result">Aucun participant</p>
+    {% endif %}
+    {% if inscriptions is not empty %}
         <table class="table table-responsive">
             <tr>
                 <th>Pseudo</th>
@@ -40,7 +43,7 @@
                 {% endfor %}
 
         </table>
-
+{% endif %}
 
 
 

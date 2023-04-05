@@ -16,22 +16,27 @@
     </head>
     <body>
     <header>
+        <div id="header_top">
         <div id="logo">
-        <img class="logo" src="" alt="logo sortir.com">
+        <img class="img_logo" src="{{ asset('images/logo_sortir.png') }}" alt="logo sortir.com">
         <h1 class="logo">Sortir.com</h1>
         </div>
+        </div>
+        <div id="header_footer">
         <nav>
             <ul>
                 <li><a href="{{ path('_index') }}">Accueil</a></li>
                 <li><a href="{{ path('_list') }}">Sorties</a></li>
                 {% if app.user %}<li><a href="{{ path('_afficher')}}">Mon profil</a></li>{% endif %}
                 <li><a href="{{ app.user ? path('logout_logout') : path('login_login') }}">{{ app.user ? 'Déconnexion' : 'Connexion' }}</a></li>
-                {% if app.user %}<li id="userHome">Vous êtes connecté avec le compte "{{ app.user.username }}"</li>{% endif %}
+
                 {% if is_granted('ROLE_ADMIN') %}
                     <li><a href="{{ path('admin') }}">Admin</a></li>
                 {% endif %}
             </ul>
         </nav>
+            {% if app.user %}<a href="{{ path('_afficher')}}"><div id="userHome"><img class="img_user" src="{{ app.user.photo ? asset('uploads/users/' ~ app.user.photo) : asset('images/user.png') }}" alt="logo de l'utilisateur">{{ app.user.username }}</div></a>{% endif %}
+        </div>
     </header>
     <main>
         {% include "addflash/_toasts.html.twig" %}
