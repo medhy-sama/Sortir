@@ -5,20 +5,18 @@
         <div id="conteneur">
 
             <article>
-                {% if message %}
-                    <div>{{ message }}</div>{% endif %}
                 <p>Votre photo de profil : </p>
                 <img src="{{ asset('uploads/users/' ~app.user.photo ) }}" alt="User-Photo_profil">
                 <p>Votre pseudo : </p>
-                <p><strong>{{ app.user.username }}</strong></p>
+                <p>{{ app.user.username }}</p>
                 <p>Votre nom : </p>
-                <p><strong>{{ app.user.nom }}</strong></p>
+                <p>{{ app.user.nom }}</p>
                 <p>Votre prenom : </p>
-                <p><strong>{{ app.user.prenom }}</strong></p>
+                <p>{{ app.user.prenom }}</p>
                 <p>Votre numéro de téléphone : </p>
-                <p><strong>{{ app.user.telephone }}</strong></p>
+                <p>{{ app.user.telephone }}</p>
                 <p>Votre email : </p>
-                <p><strong>{{ app.user.mail }}</strong></p>
+                <p>{{ app.user.mail }}</p>
                 <a href="{{ path('_modifier', {'id': app.user.id}) }}">
                     <button>Modifier</button>
                 </a>

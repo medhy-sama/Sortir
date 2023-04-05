@@ -54,6 +54,7 @@ class adminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Campus', 'fas fa-building', Campus::class);
         yield MenuItem::linkToCrud('Villes', 'fas fa-globe-europe', Ville::class);
         yield MenuItem::linkToCrud('Lieu', 'fas fa-map-marked-alt', Lieu::class);
-        yield MenuItem::linkToRoute('Home', 'fas fa-home', '_index');
+        yield MenuItem::section('Home');
+        yield MenuItem::linkToRoute('Retour à l\'accueil', 'fas fa-home', '_index');
     }
 }
