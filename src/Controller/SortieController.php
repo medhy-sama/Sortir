@@ -83,11 +83,11 @@ class SortieController extends AbstractController
                 $sortie->setEtat($etatRepository->find(1));
                 $em->persist($sortie);
                 $em->flush();
-                $this->addFlash('succes', 'Votre sortie a été enregistré');
+                $this->addFlash('succes', 'Votre sortie a été enregistrée');
                 return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
             }
         } catch (\Exception $exception) {
-            $this->addFlash('error', 'Votre sortie n\'a pas été enregistré');
+            $this->addFlash('error', 'Votre sortie n\'a pas été enregistrée');
             return $this->redirectToRoute('_creer');
         }
         return $this->render('sortie/creer.html.twig', compact('sortie', 'form')
@@ -119,11 +119,11 @@ class SortieController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $sortieRepository->save($sortie, true);
-                $this->addFlash('success', 'Vous avez bien modifié(e) la sortie');
+                $this->addFlash('success', 'Vous avez bien modifié la sortie');
                 return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
             }
         } elseif ($datededbut < $datedujour) {
-            $this->addFlash('error', 'Vous ne pouvez pas modifié(e) la sortie car la sortie à déjà débutée');
+            $this->addFlash('error', 'Vous ne pouvez pas modifié la sortie car la sortie à déjà débuté');
             return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('sortie/edit.html.twig', [
@@ -188,7 +188,7 @@ class SortieController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Vous avez publiez la sortie');
+            $this->addFlash('success', 'Vous avez publié la sortie');
             return $this->redirectToRoute('_inscrire', [
                 'sortie' => $sortie->getId()
             ]);
@@ -218,7 +218,7 @@ class SortieController extends AbstractController
 
             return $this->redirectToRoute('_list');
         } else {
-            $this->addFlash('error', 'Vous n\'avez pas été désinscrit(e), la sortie a débutée ');
+            $this->addFlash('error', 'Vous n\'avez pas été désinscrit(e), la sortie a débuté ');
             return $this->redirectToRoute('_list');
         }
     }
@@ -245,7 +245,7 @@ class SortieController extends AbstractController
                     $sortie->setEtat($etatRepository->find(6));
                     $entityManager->persist($sortie);
                     $entityManager->flush();
-                    $this->addFlash('success', 'Vous avez annuler la sortie');
+                    $this->addFlash('success', 'Vous avez annulé la sortie');
                     return $this->redirectToRoute('_list');
                 }
             }
