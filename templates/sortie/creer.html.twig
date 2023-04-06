@@ -12,38 +12,10 @@
             <a href="{{ path('_list') }}">Retourner à la liste des sorties</a>
         </li>
     </ul>
+
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script>
 
-        $('#sortie_ville').change(function (){
-            var villeSelector = document.getElementById('sortie_ville');
-            let villeId = villeSelector.value;
-            let adresse = "/sortie/lieu-city/"+villeId;
-            $.ajax({
-
-                url: adresse,
-                type: "GET",
-                dataType: "JSON",
-                // data: {
-                //     villeid: villeSelector.val()
-                // },
-                success: function (lieux) {
-                    var lieuSelect = $("#sortie_lieu");
-
-                    lieuSelect.html('');
-
-                    for (let i = 0; i < lieux.length ; i++){
-                        let textLieu = "<option value="+lieux[i]["id"]+">"+lieux[i]["nom_lieu"]+"</option>";
-                        lieuSelect.append(textLieu);
-                    }
-                },
-                error: function (err){
-                    alert("Une erreur est survenue lors du chargement des données");
-                }
-            });
-        });
-    </script>
+    {{ include('sortie/Fragments/_script_form.html.twig') }}
 
 {% endblock %}
 

@@ -13,16 +13,4 @@ class VilleCrudController extends AbstractCrudController
     {
         return Ville::class;
     }
-
-
-//    public function configureFields(string $pageName): iterable
-//    {
-//        return [
-//            IdField::new('id')->hideOnForm(),
-//            TextField::new('nom_ville'),
-//            TextField::new('code_postal'),
-//
-//        ];
-//    }
-
 }

@@ -82,7 +82,6 @@ class Campus
                 $sorty->setCampus(null);
             }
         }
-
         return $this;
     }
 
@@ -100,7 +99,6 @@ class Campus
             $this->participants->add($participant);
             $participant->setCampus($this);
         }
-
         return $this;
     }
 
@@ -112,7 +110,6 @@ class Campus
                 $participant->setCampus(null);
             }
         }
-
         return $this;
     }
 

@@ -52,12 +52,12 @@ class MainController extends AbstractController
     #[IsGranted("ROLE_USER")]
     #[Route('/compte/modifier/{id}', name: '_modifier', requirements: ['id' => '\d+'])]
     public function modifier(
-        User $user,
+        User                   $user,
         EntityManagerInterface $entityManager,
-        Request $request,
-        User $id,
-        UserRepository $userRepository,
-        SluggerInterface $slugger
+        Request                $request,
+        User                   $id,
+        UserRepository         $userRepository,
+        SluggerInterface       $slugger
     ): Response
     {
         $userForm = $this->createForm(UserType::class, $user);
@@ -69,7 +69,7 @@ class MainController extends AbstractController
             if ($photo) {
                 $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$photo->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photo->guessExtension();
                 try {
                     $photo->move(
                         $this->getParameter('user_directory'),
@@ -92,10 +92,10 @@ class MainController extends AbstractController
             }
             $this->addFlash('success', 'Votre mot de passe n\'est pas bien renseigné');
 
-            return $this->render('main/modifier.html.twig',compact('userForm'));
-            }
+            return $this->render('main/modifier.html.twig', compact('userForm'));
+        }
 
-        return $this->render('main/modifier.html.twig',compact('userForm'));
+        return $this->render('main/modifier.html.twig', compact('userForm'));
     }
 
 }

@@ -52,7 +52,6 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         );
 
 
-
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
@@ -61,16 +60,15 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
         $user = $token->getRoleNames();
-        if (in_array("ROLE_ADMIN", $user)){
-            return new RedirectResponse($this->urlGenerator->generate('_list'));
-        }else{
+        if (in_array("ROLE_ADMIN", $user)) {
+            return new RedirectResponse($this->urlGenerator->generate('admin'));
+        } else {
             return new RedirectResponse($this->urlGenerator->generate('_list'));
         }
-
         // For example:
 
 //        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-   }
+    }
 
     protected function getLoginUrl(Request $request): string
     {

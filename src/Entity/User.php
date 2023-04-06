@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Config\Security\PasswordHasherConfig;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -47,7 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 20)]
     private ?string $mail = null;
-
 
 
     #[ORM\Column]
@@ -85,7 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-
 
 
     public function getNom(): ?string
@@ -137,7 +134,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-
     public function isAdministrateur(): ?bool
     {
         return $this->administrateur;
@@ -182,7 +178,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
@@ -254,7 +250,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $sorty->setOrganisateur(null);
             }
         }
-
         return $this;
     }
 

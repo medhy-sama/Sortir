@@ -1,0 +1,17 @@
+
+//        CreateUsersFromCsvCommand $command,
+        KernelInterface $kernel,
+
+//            $application = new Application($kernel);
+//            $application->setAutoExit(false);
+//
+//            $input = new ArrayInput([
+//                'command' => 'app:CreateUsersFromCsv',
+//                // (optional) define the value of command arguments
+//                'name' => $filename,
+//            ]);
+
+
+
+//            $output = new NullOutput();
+//            $application->run($input, $output);

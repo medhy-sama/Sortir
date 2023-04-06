@@ -6,7 +6,6 @@ use App\Entity\Campus;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\User;
-use App\Entity\Ville;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -37,7 +36,7 @@ class adminController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-         return $this->render('admin/index.html.twig');
+        return $this->render('admin/index.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -52,9 +51,12 @@ class adminController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Stagiaires', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Sorties', 'fas fa-glass-martini-alt', Sortie::class);
         yield MenuItem::linkToCrud('Campus', 'fas fa-building', Campus::class);
-        yield MenuItem::linkToCrud('Villes', 'fas fa-globe-europe', Ville::class);
         yield MenuItem::linkToCrud('Lieu', 'fas fa-map-marked-alt', Lieu::class);
+        yield MenuItem::section('Upload');
+        yield MenuItem::linkToRoute('Importer un fichier', 'fa-solid fa-file-import', 'upload');
         yield MenuItem::section('Home');
         yield MenuItem::linkToRoute('Retour à l\'accueil', 'fas fa-home', '_index');
+
+
     }
 }
