@@ -92,7 +92,7 @@ class UserType extends AbstractType
                             'image/jpg',
                             'image/gif',
                         ],
-                        'mimeTypesMessage' => 'L\image n\'est pas valide',
+                        'mimeTypesMessage' => 'L\'image n\'est pas valide',
                     ])
                 ],
             ]);
