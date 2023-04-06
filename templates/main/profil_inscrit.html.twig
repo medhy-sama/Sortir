@@ -4,31 +4,31 @@
     {% if user.id %}
         <div id="conteneur">
 
+         <article>
+             <div class="row_profil_photo">
+                 {#                    <p class="row_label">Votre photo de profil : </p>#}
+                 <img class="img_user profil row_label" src="{{ user.photo ? asset('uploads/users/' ~ user.photo) : asset('images/user.png') }}"
+                      alt="User-Photo_profil">
+             </div>
+         </article>
+
+
             <article>
                 <div class="row_profil">
-                    <p class="row_label">Votre photo de profil : </p>
-                    <img class="img_user profil row_label" src="{{ user.photo ? asset('uploads/users/' ~ user.photo) : asset('images/user.png') }}"
-                         alt="User-Photo_profil">
-                </div>
-                <div class="row_profil">
-                    <p class="row_label">Votre pseudo : </p>
+                    <p class="row_label"> Pseudo : </p>
 
                     <p><strong>{{ user.username }}</strong></p>
                 </div>
                 <div class="row_profil">
-                    <p class="row_label">Votre nom : </p>
+                    <p class="row_label"> Nom : </p>
                     <p><strong>{{ user.nom }}</strong></p>
                 </div>
                 <div class="row_profil">
-                    <p class="row_label">Votre prenom : </p>
+                    <p class="row_label"> Prenom : </p>
                     <p><strong>{{ user.prenom }}</strong></p>
                 </div>
                 <div class="row_profil">
-                    <p class="row_label">Votre numéro de téléphone : </p>
-                    <p><strong>{{ user.telephone }}</strong></p>
-                </div>
-                <div class="row_profil">
-                    <p class="row_label">Votre email : </p>
+                    <p class="row_label"> Email : </p>
                     <p><strong>{{user.mail }}</strong></p>
                 </div>
             </article>

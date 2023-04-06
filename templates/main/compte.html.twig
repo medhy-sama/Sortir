@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Mon profil {% endblock %}
 {% block body %}
     {% if app.user %}
         <div id="conteneur">
             <article>
-                <div class="row_profil">
-                    <p class="row_label">Votre photo de profil : </p>
+                <div class="row_profil_photo">
+{#                    <p class="row_label">Votre photo de profil : </p>#}
                     <img class="img_user profil row_label" src="{{ asset('uploads/users/' ~app.user.photo ) }}"
                          alt="User-Photo_profil">
 
@@ -34,9 +34,13 @@
                     <p class="row_label">Votre email : </p>
                     <p><strong>{{ app.user.mail }}</strong></p>
                 </div>
-                <a href="{{ path('_modifier', {'id': app.user.id}) }}">
+
+                <div class="row_profil">
+                    <a href="{{ path('_modifier', {'id': app.user.id}) }}">
                         {% if app.user.actif and app.user.roles == ['ROLE_USER'] %}<button>Modifier</button>{% endif %}
                     </a>
+                </div>
+
             </article>
 
 
@@ -45,7 +49,4 @@
     {% endif %}
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
 

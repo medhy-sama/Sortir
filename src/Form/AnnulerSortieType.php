@@ -25,13 +25,11 @@ class AnnulerSortieType extends AbstractType
                         'message' => 'Veuillez inscrire le motif d\'annulation',
                     ]),
                     new Regex([
-                        'pattern' => '^[a-zA-Z0-9]+$',
+                        'pattern' => '^[a-zA-Z0-9]+$^',
                         'message' => 'Le motif d\'annulation n\'est pas valide',
-
                     ])
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

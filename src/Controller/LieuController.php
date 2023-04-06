@@ -71,7 +71,7 @@ class LieuController extends AbstractController
     #[Route('/{id}', name: 'app_lieu_delete', methods: ['POST'])]
     public function delete(Request $request, Lieu $lieu, LieuRepository $lieuRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$lieu->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $lieu->getId(), $request->request->get('_token'))) {
             $lieuRepository->remove($lieu, true);
         }
 

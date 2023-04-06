@@ -51,13 +51,13 @@ class UserType extends AbstractType
                 'invalid_message' => 'Attention les valeurs des champs de mot de passe ne correspondent pas.',
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
-                'first_options'  => ['label' => 'Mot de passe : '],
+                'first_options' => ['label' => 'Mot de passe : '],
                 'second_options' => ['label' => 'Confirmer mot de passe : '],
 
             ])
             ->add('nom', TextType::class, [
                 'label' => 'Nom : '
-                ])
+            ])
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom : '
             ])
@@ -75,7 +75,7 @@ class UserType extends AbstractType
                         'message' => 'Le numéro de téléphone n\'est pas au bon format'
                     ])
 
-    ]
+                ]
             ])
             ->add('mail', TextType::class, [
                 'label' => 'Email : '
@@ -85,17 +85,17 @@ class UserType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                        new File([
-                            'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                'image/jpeg',
-                                'image/jpg',
-                                'image/gif',
-                            ],
-                            'mimeTypesMessage' => 'L\image n\'est pas valide',
-                        ])
-                    ],
-                            ]);
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'L\image n\'est pas valide',
+                    ])
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

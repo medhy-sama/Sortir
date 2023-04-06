@@ -17,63 +17,61 @@ class SearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('campus', EntityType::class,[
-                'required'=>false,
-                'class'=>Campus::class,
+            ->add('campus', EntityType::class, [
+                'required' => false,
+                'class' => Campus::class,
                 'mapped' => true,
                 'placeholder' => 'Tous les campus',
                 'label' => false
 
             ])
-            ->add('q', TextType::class,[
-                'label' =>false,
-                'required' =>false,
+            ->add('q', TextType::class, [
+                'label' => false,
+                'required' => false,
                 'mapped' => true,
                 'attr' => [
                     'placeholder' => 'Rechercher',
                 ]
 
             ])
-            ->add('datemin', DateTimeType::class,[
-                'label'=>'Entre ',
+            ->add('datemin', DateTimeType::class, [
+                'label' => 'Entre ',
                 'html5' => true,
                 'widget' => 'single_text',
                 'mapped' => true,
-                'required'=>false,
+                'required' => false,
             ])
-            ->add('datemax', DateTimeType::class,[
-                'label'=>'et ',
+            ->add('datemax', DateTimeType::class, [
+                'label' => 'et ',
                 'html5' => true,
                 'widget' => 'single_text',
                 'mapped' => true,
-                'required' =>false,
+                'required' => false,
             ])
             ->add('organisateur', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur.ice',
                 'required' => false,
-                'data'=>true,
+                'data' => true,
                 'mapped' => true,
             ])
-
             ->add('inscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit.e',
                 'required' => false,
-                'data'=>true,
+                'data' => true,
                 'mapped' => true,
             ])
             ->add('nonInscrit', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit.e',
                 'required' => false,
-                'data'=>true,
+                'data' => true,
                 'mapped' => true,
             ])
             ->add('sortiePassee', CheckboxType::class, [
                 'label' => 'Sorties passées',
                 'required' => false,
-                'data'=>false,
+                'data' => false,
                 'mapped' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

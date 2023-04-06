@@ -26,8 +26,6 @@ class LieuCrudController extends AbstractCrudController
             TextField::new('rue'),
             NumberField::new('latitude'),
             NumberField::new('longitude'),
-
-
         ];
     }
 
