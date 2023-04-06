@@ -18,12 +18,25 @@
     <header>
         <div id="header_top">
         <div id="logo">
-        <img class="img_logo" src="{{ asset('images/logo_sortir.png') }}" alt="logo sortir.com">
+            <a href="{{ path('_list') }}"><img class="img_logo" src="{{ asset('images/logo_sortir.png') }}" alt="logo sortir.com"></a>
         <h1 class="logo">Sortir.com</h1>
         </div>
             <div id="bannière">
 
             </div>
+            <audio><source src="{{ asset('audio/Le_cri_de_léléphant.mp3') }}" type="audio/mpeg"></audio>
+            <script>
+            $(document).ready(function(){
+            $('#bannière').click(function(){
+            var song = $('audio');
+            if(song.paused){
+            song.play()
+            } else {
+            song.pause()
+            }
+            })
+            })
+            </script>
         </div>
         <div id="header_footer">
         <nav>

@@ -140,7 +140,7 @@ class SortieType extends AbstractType
                         'message' => 'Veuillez décrire la sortie',
                     ]),
                     new Regex([
-                        'pattern' => '^[a-zA-Z0-9]+$',
+                        'pattern' => '^[a-zA-Z0-9]+$^',
 
                     ])
                 ]
