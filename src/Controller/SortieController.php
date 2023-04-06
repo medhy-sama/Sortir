@@ -38,6 +38,10 @@ class SortieController extends AbstractController
         Request          $request,
     ): Response
     {
+        if ($this->getUser()->isActif() == false){
+            $this->addFlash('error', 'Votre compte est inactif, veuillez contacter l\'administrateur');
+            return $this->redirectToRoute('login_login');
+        }
         $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
         $user = $this->getUser();
