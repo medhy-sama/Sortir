@@ -30,6 +30,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[IsGranted("ROLE_USER")]
 #[Route('/sortie')]
 class SortieController extends AbstractController
+
+
+/*
+ * Renvoie sur la page qui liste les sorties
+ * Utilisation du formulaire de filtre et
+ * création d'un nouvel objet rechercheSortie pret à accueillir les infos demandées par l'utilisateur
+ * la méthode search est passée dans le render afin d'avoir la liste de sorties à jour avec les case préalablement cochées
+ * la méthode search prend en paramètre le user en cours, l'objet état en libelle passé et l'objet rechercheSortie**/
 {
     #[Route('/', name: '_list', methods: ['GET', 'POST'])]
     public function listeSortie(
@@ -163,8 +171,6 @@ class SortieController extends AbstractController
             $this->addFlash('error', 'Vous n\'avez pas été inscrit(e), les inscriptions sont cloturées ou complètes');
             return $this->redirectToRoute('_list');
         }
-
-        /*return $this->redirectToRoute('_list');*/
     }
 
     #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
@@ -172,8 +178,6 @@ class SortieController extends AbstractController
         Sortie                 $sortie,
         EtatRepository         $etatRepository,
         EntityManagerInterface $entityManager,
-        UserRepository         $userRepository,
-        SortieRepository       $sortieRepository
     ): Response
     {
         $datededbut = $sortie->getDatedebut();
@@ -192,7 +196,6 @@ class SortieController extends AbstractController
             $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>' . 'Veuillez modifier la date du début de la sortie');
             return $this->redirectToRoute('_list');
         }
-
     }
 
     #[Route('/desiter/{sortie}', name: '_desister', methods: ['GET'])]
@@ -224,7 +227,6 @@ class SortieController extends AbstractController
     public function motif_annulation(
         Sortie                 $sortie,
         EntityManagerInterface $entityManager,
-        SortieRepository       $sortieRepository,
         Request                $request,
         EtatRepository         $etatRepository
     ): Response
