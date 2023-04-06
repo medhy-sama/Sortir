@@ -1,6 +1,17 @@
-<div class="form_connexion">
+
+    <h1>Organiser une sortie</h1>
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
-</div>
+        <div class="form_connexion">
+            {{ form_row(form.nom) }}
+            {{ form_row(form.datedebut) }}
+            {{ form_row(form.duree) }}
+            {{ form_row(form.datecloture) }}
+            {{ form_row(form.nbinscriptionsmax) }}
+            {{ form_row(form.descriptioninfos) }}
+            {{ form_row(form.campus) }}
+            {{ form_row(form.ville) }}
+            {{ form_row(form.lieu) }}
+            <button class="btn" id="sortie">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+        </div>
+
