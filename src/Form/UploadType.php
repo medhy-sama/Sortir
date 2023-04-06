@@ -2,30 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Lieu;
+use App\Entity\Upload;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
-class LieuType extends AbstractType
+class UploadType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom_lieu', null, [
-                'label' => 'Nom',
-            ])
-            ->add('rue', null, [
-                'label' => 'Titre de la sortie',
-            ])
-            ->add('latitude')
-            ->add('longitude');
+            ->add('name', FileType::class, [
+                'label' => 'Votre fichier   : ',
+                'constraints' => new File()
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Lieu::class,
+            'data_class' => Upload::class,
         ]);
     }
 }

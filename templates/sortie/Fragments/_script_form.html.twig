@@ -1,29 +1,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-
-    $('#sortie_ville').change(function (){
+    /**
+     * Utilisation de la librairie JQuery.
+     * Utilisation de la méthode Ajax de JQuery.
+     * Script qui permet de gérer dynamiquement l'apparition des lieux correspondant à la ville sélectionné.
+     */
+    $('#sortie_ville').change(function () {
         var villeSelector = document.getElementById('sortie_ville');
         let villeId = villeSelector.value;
-        let adresse = "/sortie/lieu-city/"+villeId;
+        let adresse = "/sortie/lieu-city/" + villeId;
         $.ajax({
-
             url: adresse,
             type: "GET",
             dataType: "JSON",
-            // data: {
-            //     villeid: villeSelector.val()
-            // },
             success: function (lieux) {
                 var lieuSelect = $("#sortie_lieu");
-
                 lieuSelect.html('');
-
-                for (let i = 0; i < lieux.length ; i++){
-                    let textLieu = "<option value="+lieux[i]["id"]+">"+lieux[i]["nom_lieu"]+"</option>";
+                for (let i = 0; i < lieux.length; i++) {
+                    let textLieu = "<option value=" + lieux[i]["id"] + ">" + lieux[i]["nom_lieu"] + "</option>";
                     lieuSelect.append(textLieu);
                 }
             },
-            error: function (err){
+            error: function (err) {
                 alert("Une erreur est survenue lors du chargement des données");
             }
         });

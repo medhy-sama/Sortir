@@ -31,31 +31,33 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 #[Route('/sortie')]
 class SortieController extends AbstractController
 {
-    #[Route('/', name: '_list', methods: ['GET','POST'])]
-    public function listeSortie(SortieRepository $sortieRepository,
-                                EtatRepository $etatRepository,
-                                Request $request,
-                                ): Response
+    #[Route('/', name: '_list', methods: ['GET', 'POST'])]
+    public function listeSortie(
+        SortieRepository $sortieRepository,
+        EtatRepository   $etatRepository,
+        Request          $request,
+    ): Response
     {
         $etatpasse = $etatRepository->find(5);
         $rechercheSortie = new rechercheSortie();
         $user = $this->getUser();
-        $form = $this->createForm(SearchType::class,$rechercheSortie);
+        $form = $this->createForm(SearchType::class, $rechercheSortie);
         $form->handleRequest($request);
 
-            return $this->render('sortie/liste.html.twig', [
-                'form' => $form,
-                'sorties' => $sortieRepository->search($rechercheSortie, $user,$etatpasse)
+        return $this->render('sortie/liste.html.twig', [
+            'form' => $form,
+            'sorties' => $sortieRepository->search($rechercheSortie, $user, $etatpasse)
 
-            ]);
+        ]);
     }
 
     #[Route('/creer', name: '_creer', methods: ['GET', 'POST'])]
-    public function creerSortie(Request $request,
-                                EntityManagerInterface $em,
-                                EtatRepository $etatRepository,
-                                CampusRepository $campusRepository,
-                                ): Response
+    public function creerSortie(
+        Request                $request,
+        EntityManagerInterface $em,
+        EtatRepository         $etatRepository,
+        CampusRepository       $campusRepository,
+    ): Response
 
     {
         $sortie = new Sortie();
@@ -63,8 +65,6 @@ class SortieController extends AbstractController
         $sortie->setCampus($campusRepository->find($this->getUser()->getCampus()->getId()));
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
-
-
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $sortie->setOrganisateur($this->getUser());
@@ -77,40 +77,43 @@ class SortieController extends AbstractController
         } catch (\Exception $exception) {
             $this->addFlash('error', 'Votre sortie n\'a pas été enregistré');
             return $this->redirectToRoute('_creer');
-            }
-        return $this->render('sortie/creer.html.twig', compact('sortie','form')
+        }
+        return $this->render('sortie/creer.html.twig', compact('sortie', 'form')
         );
     }
 
     #[Route('/{sortie}', name: '_detail', methods: ['GET'])]
-    public function show(Sortie $sortie): Response
+    public function show(
+        Sortie $sortie
+    ): Response
     {
         $inscriptions = $sortie->getInscriptions();
-
-
         return $this->render('sortie/detail.html.twig',
-            compact('sortie','inscriptions'));
+            compact('sortie', 'inscriptions'));
     }
 
     #[Route('/edit/{id}', name: 'app_sortie_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    public function edit(
+        Request          $request,
+        Sortie           $sortie,
+        SortieRepository $sortieRepository
+    ): Response
     {
-        $datededbut=$sortie->getDatedebut();
+        $datededbut = $sortie->getDatedebut();
         $datedujour = new \DateTime();
-        if ($datededbut>$datedujour){
-        $form = $this->createForm(SortieType::class, $sortie);
-        $form->handleRequest($request);
+        if ($datededbut > $datedujour) {
+            $form = $this->createForm(SortieType::class, $sortie);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $sortieRepository->save($sortie, true);
-            $this->addFlash('success', 'Vous avez bien modifié(e) la sortie');
-            return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
-        }
-        }elseif ($datededbut<$datedujour){
+            if ($form->isSubmitted() && $form->isValid()) {
+                $sortieRepository->save($sortie, true);
+                $this->addFlash('success', 'Vous avez bien modifié(e) la sortie');
+                return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
+            }
+        } elseif ($datededbut < $datedujour) {
             $this->addFlash('error', 'Vous ne pouvez pas modifié(e) la sortie car la sortie à déjà débutée');
             return $this->redirectToRoute('_list', [], Response::HTTP_SEE_OTHER);
         }
-
         return $this->render('sortie/edit.html.twig', [
             'sortie' => $sortie,
             'form' => $form,
@@ -118,24 +121,30 @@ class SortieController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_sortie_delete', methods: ['POST'])]
-    public function delete(Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    public function delete(
+        Request          $request,
+        Sortie           $sortie,
+        SortieRepository $sortieRepository
+    ): Response
     {
         if ($this->isCsrfTokenValid('delete' . $sortie->getId(), $request->request->get('_token'))) {
             $sortieRepository->remove($sortie, true);
         }
-
         return $this->redirectToRoute('_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/inscrire/{sortie}', name: '_inscrire', methods: ['GET'])]
-    public function inscription(Sortie $sortie, EntityManagerInterface $entityManager): Response
+    public function inscription(
+        Sortie                 $sortie,
+        EntityManagerInterface $entityManager
+    ): Response
     {
-        $datedujour=new \DateTime();
+        $datedujour = new \DateTime();
         $etat = $sortie->getEtat();
         $nbInscriptionMax = $sortie->getNbinscriptionsmax();
         $nbInscrit = count($sortie->getInscriptions());
         $complet = $nbInscriptionMax - $nbInscrit;
-        if ($etat->getLibelle() == "Ouverte" and $complet  > 0){
+        if ($etat->getLibelle() == "Ouverte" and $complet > 0) {
             $user = $this->getUser();
             $inscription = new Inscription();
             $inscription->setSortieId($sortie);
@@ -146,8 +155,7 @@ class SortieController extends AbstractController
             $this->addFlash('success', 'Vous vous étes bien inscrit(e)');
 
             return $this->redirectToRoute('_list');
-        }
-       else{
+        } else {
             $this->addFlash('error', 'Vous n\'avez pas été inscrit(e), les inscriptions sont cloturées ou complètes');
             return $this->redirectToRoute('_list');
         }
@@ -156,30 +164,39 @@ class SortieController extends AbstractController
     }
 
     #[Route('/publier/{sortie}', name: '_publier', methods: ['GET'])]
-    public function publication(Sortie $sortie, EtatRepository $etatRepository, EntityManagerInterface $entityManager, UserRepository $userRepository,SortieRepository $sortieRepository): Response
+    public function publication(
+        Sortie                 $sortie,
+        EtatRepository         $etatRepository,
+        EntityManagerInterface $entityManager,
+        UserRepository         $userRepository,
+        SortieRepository       $sortieRepository
+    ): Response
     {
-        $datededbut=$sortie->getDatedebut();
+        $datededbut = $sortie->getDatedebut();
         $datedujour = new \DateTime();
 
-        if ($datededbut>$datedujour){
+        if ($datededbut > $datedujour) {
             $sortie->setEtat($etatRepository->find(2));
             $entityManager->persist($sortie);
             $entityManager->flush();
 
             $this->addFlash('success', 'Vous avez publiez la sortie');
-            return $this->redirectToRoute('_inscrire',[
-                'sortie'=>$sortie->getId()
+            return $this->redirectToRoute('_inscrire', [
+                'sortie' => $sortie->getId()
             ]);
-        }
-        else{
-            $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>'.'Veuillez modifier la date du début de la sortie');
+        } else {
+            $this->addFlash('error', 'Vous ne pouvez pas publier la sortie, la date du début de la sortie est antérieur à la date du jour.<br>' . 'Veuillez modifier la date du début de la sortie');
             return $this->redirectToRoute('_list');
         }
 
     }
 
     #[Route('/desiter/{sortie}', name: '_desister', methods: ['GET'])]
-    public function deinscription( InscriptionRepository $inscriptionRepository, EntityManagerInterface $entityManager, Sortie $sortie): Response
+    public function deinscription(
+        InscriptionRepository  $inscriptionRepository,
+        EntityManagerInterface $entityManager,
+        Sortie                 $sortie
+    ): Response
     {
         $etat = $sortie->getEtat();
         if ($etat->getLibelle() == "Ouverte" or $etat->getLibelle() == "Cloturee") {
@@ -193,16 +210,20 @@ class SortieController extends AbstractController
 
 
             return $this->redirectToRoute('_list');
-        }
-        else{
+        } else {
             $this->addFlash('error', 'Vous n\'avez pas été désinscrit(e), la sortie a débutée ');
             return $this->redirectToRoute('_list');
         }
     }
 
-
     #[Route('/annuler/{sortie}', name: '_motif_annuler')]
-    public function motif_annulation(Sortie $sortie, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, Request $request, EtatRepository $etatRepository): Response
+    public function motif_annulation(
+        Sortie                 $sortie,
+        EntityManagerInterface $entityManager,
+        SortieRepository       $sortieRepository,
+        Request                $request,
+        EtatRepository         $etatRepository
+    ): Response
     {
         $form = $this->createForm(AnnulerSortieType::class, $sortie);
         $form->handleRequest($request);
@@ -210,30 +231,38 @@ class SortieController extends AbstractController
             $sortie->setMotif($request->request->get('motif'));
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $datededbut=$sortie->getDatedebut();
+            $datededbut = $sortie->getDatedebut();
             $datedujour = new \DateTime();
             $etat = $sortie->getEtat()->getId();
-            if ($datededbut>$datedujour){
-                if ($etat == 2 or $etat == 3){
+            if ($datededbut > $datedujour) {
+                if ($etat == 2 or $etat == 3) {
                     $sortie->setEtat($etatRepository->find(6));
                     $entityManager->persist($sortie);
                     $entityManager->flush();
                     $this->addFlash('success', 'Vous avez annuler la sortie');
                     return $this->redirectToRoute('_list');
-        }
-    }
+                }
+            }
         }
         return $this->render('sortie/annuler.html.twig', compact('form'));
     }
 
 
-
+    /**
+     * @param Ville $ville
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param LieuRepository $lieuRepository
+     * @return JsonResponse
+     * Route pour qui permet de faire une requete pour récupérer les lieux correspondant à une ville
+     * Retourne un JsonResponse
+     */
     #[Route('/lieu-city/{ville}', name: '_lieu', methods: ['GET'])]
     public function listLieuDeVille(
-        Ville $ville,
-        Request $request,
+        Ville                  $ville,
+        Request                $request,
         EntityManagerInterface $em,
-        LieuRepository $lieuRepository
+        LieuRepository         $lieuRepository
     ): JsonResponse
     {
 
@@ -246,7 +275,7 @@ class SortieController extends AbstractController
             ->getResult();
 
         $responseArray = array();
-        foreach ($lieux as $lieu){
+        foreach ($lieux as $lieu) {
             $responseArray[] = array(
                 "id" => $lieu->getId(),
                 "nom_lieu" => $lieu->getNomLieu()
