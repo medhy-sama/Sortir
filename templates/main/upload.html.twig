@@ -3,13 +3,15 @@
 {% block title %}Téléchargement Fichier{% endblock %}
 
 {% block body %}
-    <h1>Upload File</h1>
-
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
-
-    <a href="{{ path('admin') }}">back to dashboard</a>
+    <div id="form_connexion">
+        <h1>Importer un fichier</h1>
+        {{ form_start(form) }}
+        <div class="form_connexion">
+            {{ form_widget(form) }}
+            <button class="btn">{{ button_label|default('Importer') }}</button>
+        </div>
+        {{ form_end(form) }}
+        <a href="{{ path('admin') }}">Retour à l'espace administrateur</a>
+    </div>
 {% endblock %}
 
