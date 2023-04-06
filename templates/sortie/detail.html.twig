@@ -3,30 +3,34 @@
 {% block title %}Sortie{% endblock %}
 
 {% block body %}
+    <div id="centre">
     <h1>{{ sortie.nom }}</h1>
 
     <section id="details">
         <div id="titre">
+            <strong>
             {{ sortie.descriptioninfos }}
             {{ sortie.lieu.nomLieu}}
             {{ sortie.lieu.rue ~ ' '~ sortie.lieu.ville.codePostal ~' '~ sortie.lieu.ville.nomVille}}
-            {{ sortie.campus.nom}}
+            </strong>
         </div>
         <div id="dateHoraire">
-            {{ sortie.datedebut ? sortie.datedebut|date('d/m/y H:i') : '' }}
-            {{ sortie.duree }}
-            {{ sortie.datecloture ? sortie.datecloture|date('d/m/y H:i') : '' }}
+            <span>Date du début de la sortie : </span><strong>{{ sortie.datedebut ? sortie.datedebut|date('d/m/y H:i') : '' }}</strong><br>
+            <span>Durée de la sortie : </span><strong>{{ sortie.duree }}</strong><br>
+                <span>Date de fin d'inscription à la sortie : </span><strong>{{ sortie.datecloture ? sortie.datecloture|date('d/m/y H:i') : '' }}</strong><br>
         </div>
         <div id="infoAdmin">
-            {{ sortie.nbinscriptionsmax }}
-            {{ sortie.etat.libelle }}
-            {{ sortie.organisateur.username}}
+            <span>Nombre de participants maximum : </span><strong>{{ sortie.nbinscriptionsmax }}</strong><br>
+            <span>l'État de la sortie : </span><strong>{{ sortie.etat.libelle }}</strong><br>
+            <span>Le nom de la personne organisatrice : </span><strong>{{ sortie.organisateur.username}}</strong><br>
         </div>
     </section>
 
         <h1>Participants</h1>
     {% if inscriptions is empty %}
+        <div id="conteneur">
         <p class="none_result">Aucun participant</p>
+        </div>
     {% endif %}
     {% if inscriptions is not empty %}
         <table class="table table-responsive">
@@ -49,4 +53,5 @@
 
 
     <a href="{{ path('_list') }}">Retourner à liste des sorties</a>
+    </div>
 {% endblock %}

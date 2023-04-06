@@ -2,11 +2,15 @@
 {% block title %}Mon profil {% endblock %}
 {% block body %}
     {% if app.user %}
+        <div id="centre">
+        <h1>Mon profil</h1>
+        </div>
         <div id="conteneur">
+
             <article>
                 <div class="row_profil_photo">
 {#                    <p class="row_label">Votre photo de profil : </p>#}
-                    <img class="img_user profil row_label" src="{{ asset('uploads/users/' ~app.user.photo ) }}"
+                    <img class="img_user profil row_label" src="{{ app.user.photo ? asset('uploads/users/' ~ app.user.photo) : asset('images/user.png') }}"
                          alt="User-Photo_profil">
 
                 </div>

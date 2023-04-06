@@ -86,7 +86,7 @@ class MainController extends AbstractController
             if (($val1->getPassword()) == $val2) {
                 $entityManager->persist($id);
                 $entityManager->flush();
-                $this->addFlash('success', 'Vous avez bien modifié(e) vos informations');
+                $this->addFlash('success', 'Vous avez bien modifié vos informations');
 
                 return $this->render('main/compte.html.twig');
             }
