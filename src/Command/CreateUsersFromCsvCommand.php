@@ -59,7 +59,7 @@ class CreateUsersFromCsvCommand extends Command
     /**
      * @return void
      * Set de la description
-     * Ajout de l'argument necessaire pour enregistrer le fichier csv
+     * Ajout de l'argument nécessaire pour enregistrer le fichier csv
      */
     protected function configure(): void
     {
