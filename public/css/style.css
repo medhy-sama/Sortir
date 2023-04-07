@@ -223,10 +223,20 @@ article{
     max-height: 300px;
 
 }
+
     .row_profil_photo img{
         width: 100%;
         height: 100%;
         border-radius: 50%;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        -webkit-transition: 3s ease-in-out;
+        transition: 3s ease-in-out;
+    }
+    .row_profil_photo img:hover{
+        border-radius: 0%;
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
     }
 .row_profil .row_label{
     padding: 0.2em;
