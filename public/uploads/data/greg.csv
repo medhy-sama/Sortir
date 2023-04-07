@@ -1,0 +1,2 @@
+﻿campus_id,username,password,nom,prenom,telephone,mail,administrateur,actif,is_verified,photo
+1,Gregory,123123,Michaud,Gregory,0110203029,gregory@sortir.com,0,1,0,
