@@ -3,38 +3,38 @@
 {% block body %}
 
 
-{#    <div class="">#}
-        <h1> Filtrer les sorties </h1>
-            <div class="form_search">
-                {{ form_start(form) }}
-                    <div class="form_block">
-                        {{ form_row(form.campus)}}
-                        {{ form_row(form.q)}}
-                            <div class="form_date">
-                                {{ form_row(form.datemin)}}
-                                {{ form_row(form.datemax)}}
-                            </div>
-                    </div>
-                    <div class="form_block">
-                        {{ form_row(form.organisateur)}}
-                        {{ form_row(form.inscrit)}}
-                        {{ form_row(form.nonInscrit)}}
-                        {{ form_row(form.sortiePassee)}}
-                    </div>
-                    <div class="form_block">
-                        <button> Filtrer </button>
-                    </div>
-                {{ form_end(form) }}
+    {#    <div class=""> #}
+    <h1> Filtrer les sorties </h1>
+    <div class="form_search">
+        {{ form_start(form) }}
+        <div class="form_block">
+            {{ form_row(form.campus) }}
+            {{ form_row(form.q) }}
+            <div class="form_date">
+                {{ form_row(form.datemin) }}
+                {{ form_row(form.datemax) }}
             </div>
+        </div>
+        <div class="form_block">
+            {{ form_row(form.organisateur) }}
+            {{ form_row(form.inscrit) }}
+            {{ form_row(form.nonInscrit) }}
+            {{ form_row(form.sortiePassee) }}
+        </div>
+        <div class="form_block">
+            <button> Filtrer</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
 
 
-        {% if sorties is empty %}
-            <div id="conteneur">
+    {% if sorties is empty %}
+        <div id="conteneur">
             <p class="none_result">Aucun resultat</p>
-            </div>
-        {% endif %}
-        {% if sorties is not empty %}
-            <div class="div_tab">
+        </div>
+    {% endif %}
+    {% if sorties is not empty %}
+        <div class="div_tab">
             <table class="table table-responsive">
                 <tr>
                     <th>Sortie</th>
@@ -60,7 +60,7 @@
                                 <td>{% if chaqueSortie.inscriptions | length == chaqueSortie.nbinscriptionsmax %}
                                         COMPLET
                                     {% else %}{{ chaqueSortie.inscriptions | length }}/{{ chaqueSortie.nbinscriptionsmax }}
-                                        {% endif %}
+                                    {% endif %}
                                 </td>
                                 <td>{{ chaqueSortie.etat.libelle }}</td>
                                 <td>    {% if chaqueSortie.estInscrit(app.user) == 1 %}
@@ -75,10 +75,6 @@
                                 <td>
                                     {% if app.user != chaqueSortie.organisateur %}
                                         <a href="{{ path('_detail',{'sortie': chaqueSortie.id}) }}">Afficher</a>
-                                        {% if chaqueSortie.estInscrit(app.user) !=1 and chaqueSortie.etat.id ==2 %}
-                                            <a href="{{ path('_inscrire',{'sortie': chaqueSortie.id}) }}"> -
-                                                S'inscrire</a>
-                                        {% endif %}
                                     {% endif %}
                                     {% if app.user == chaqueSortie.organisateur %}
                                         {% if chaqueSortie.etat.id != 6 %}
@@ -95,6 +91,10 @@
                                     {% if chaqueSortie.estInscrit(app.user) == 1 and chaqueSortie.etat.id != 6 %}
                                         <a href="{{ path('_desister',{'sortie': chaqueSortie.id}) }}"> - Se désister</a>
                                     {% endif %}
+                                    {% if chaqueSortie.estInscrit(app.user) !=1 and chaqueSortie.etat.id ==2 %}
+                                        <a href="{{ path('_inscrire',{'sortie': chaqueSortie.id}) }}"> -
+                                            S'inscrire</a>
+                                    {% endif %}
                                 </td>
                             </tr>
 
@@ -103,12 +103,14 @@
                     {% endfor %}
                 </div>
             </table>
-            </div>
-        {% endif %}
+        </div>
+    {% endif %}
     </div>
 
 
 
 
-    <a href="{{ path('_creer') }}"><button>Organiser une nouvelle sortie</button></a>
+    <a href="{{ path('_creer') }}">
+        <button>Organiser une nouvelle sortie</button>
+    </a>
 {% endblock %}

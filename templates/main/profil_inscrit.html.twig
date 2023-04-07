@@ -7,7 +7,7 @@
          <article>
              <div class="row_profil_photo">
                  {#                    <p class="row_label">Votre photo de profil : </p>#}
-                 <img class="img_user profil row_label" src="{{ user.photo ? asset('uploads/users/' ~ user.photo) : asset('images/user.png') }}"
+                 <img class="profil row_label" src="{{ user.photo ? asset('uploads/users/' ~ user.photo) : asset('images/user.png') }}"
                       alt="User-Photo_profil">
              </div>
          </article>
